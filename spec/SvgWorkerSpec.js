@@ -43,4 +43,15 @@ describe("SvgWorker", () => {
         })
         )
     })
+    describe("getPoints", () => {
+        let data
+        beforeEach(() => data = svgWorker.parse(FEED_SYNC_SVG))
+        it("doit être une fonction", () => expect(svgWorker.getPoints).toEqual(jasmine.any(Function)));
+        it("doit retourner un tableau", () => {
+
+            expect(svgWorker.getPoints(
+                data.svg.g.path[0]["@_d"])).toEqual(jasmine.any(Array))
+
+        });
+    })
 })

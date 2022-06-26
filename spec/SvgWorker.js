@@ -6,5 +6,9 @@ module.exports = function SvgWorker(){
         ignoreAttributes: false
     })
     self.parse = (svg) => parser.parse(svg)
+    self.getPoints = function getPoints(str)
+    {
+        return []
+    }
     return self
 }
