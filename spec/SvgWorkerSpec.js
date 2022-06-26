@@ -25,33 +25,15 @@ describe("SvgWorker", () => {
         it("doit retourner un objet", () => expect(svgWorker.parse(FEED_SYNC_SVG)).toEqual(jasmine.any(Object)));
         it("doit retourner FEED_SYNC_SVG correctement parsé", () => expect(svgWorker.parse(FEED_SYNC_SVG)).toEqual({
             "svg": {
-                "rect": {
-                    "@_width": "99",
-                    "@_height": "99",
-                    "@_x": "1",
-                    "@_rx": "20",
-                    "@_fill": "#F80"
-                },
+                "rect": { "@_width": "99", "@_height": "99", "@_x": "1", "@_rx": "20", "@_fill": "#F80" },
                 "g": {
                     "circle": [
-                        {
-                            "@_r": "8",
-                            "@_cx": "78",
-                            "@_cy": "25"
-                        },
-                        {
-                            "@_r": "8",
-                            "@_cx": "28",
-                            "@_cy": "73"
-                        }
+                        { "@_r": "8", "@_cx": "78", "@_cy": "25" },
+                        { "@_r": "8", "@_cx": "28", "@_cy": "73" }
                     ],
                     "path": [
-                        {
-                            "@_d": "M22,37c20,0,41,21,41,41h-11c0-15-16-30-30-30z"
-                        },
-                        {
-                            "@_d": "M84,60c-20,0-41-21-41-41h11c0,15,16,30,30,30z"
-                        }
+                        { "@_d": "M22,37c20,0,41,21,41,41h-11c0-15-16-30-30-30z" },
+                        { "@_d": "M84,60c-20,0-41-21-41-41h11c0,15,16,30,30,30z" }
                     ],
                     "@_fill": "#FFF"
                 },
