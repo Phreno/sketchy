@@ -38,7 +38,23 @@ module.exports = function Sketchy() {
             return [point.x, point.y]
         })
     }
-    self.getPathsFromSvg = (svgDocument) => console.log(svgDocument) || svgDocument.svg.g.path.map(path => path["@_d"])
-
+    self.getPathsFromSvg = (source) => {
+        function* getValues(source, search) {
+            const [key] = Object.keys(source)
+            if (key === undefined) return
+            const { [key]: value, ...rest } = source
+            if (key === search) yield value
+            if (typeof value === 'object') yield* getValues(value, search)
+            yield* getValues(rest, search)
+        }
+        const pathIterator = getValues(source, 'path')
+        const paths = []
+        for (const path of pathIterator) {
+            paths.push(path)
+        }
+        const arr = paths.flat().map(path => path["@_d"])
+        console.log(arr)
+        return arr
+    }
     return self
 }
