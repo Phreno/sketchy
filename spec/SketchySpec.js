@@ -21,12 +21,19 @@ describe("Sketchy", () => {
     let sketchy
     beforeEach(() => sketchy = new Sketchy())
     it("doit être un objet", () => expect(sketchy).toEqual(jasmine.any(Object)));
-    it("doit pouvoir retourner une stroke", ()=> expect(sketchy.getStroke).toEqual(jasmine.any(Function)));
+    it("doit pouvoir retourner une stroke", () => expect(sketchy.getStroke).toEqual(jasmine.any(Function)));
     describe("getStroke", () => {
-        it("doit retourner un tableau de point", ()=> expect(sketchy.getStroke(POINTS)).toEqual(jasmine.any(Array)))
+        it("doit retourner un tableau de point", () => expect(sketchy.getStroke(POINTS)).toEqual(jasmine.any(Array)))
     })
-    it("doit pouvoir «randomiser» les points", ()=> expect(sketchy.randomize).toEqual(jasmine.any(Function)))
+    it("doit pouvoir «randomiser» les points", () => expect(sketchy.randomize).toEqual(jasmine.any(Function)))
     describe("randomize", () => {
-        it("doit retourner un tableau de point", ()=> expect(sketchy.randomize(POINTS)).toEqual(jasmine.any(Array)))
+        it("doit retourner un tableau de point", () => expect(sketchy.randomize(POINTS)).toEqual(jasmine.any(Array)))
+        it("doit retourner un tableau de point différent", () => expect(sketchy.randomize(POINTS)).not.toEqual(POINTS))
+        it("doit retourner un tableau de taille identique", () => expect(sketchy.randomize(POINTS).length).toEqual(POINTS.length))
+        it("doit retourner un tableau de point sensiblement identique", () => sketchy.randomize(POINTS).forEach((point, index) =>
+        console.log(point, POINTS[index])
+            || expect(point).toEqual(jasmine.any(Array))
+            && expect(Math.abs(point[0] - POINTS[index][0]) <= 5).toBeTruthy()
+            && expect(Math.abs(point[1] - POINTS[index][1]) <= 5).toBeTruthy()))
     })
 })
