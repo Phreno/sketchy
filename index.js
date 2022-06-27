@@ -39,5 +39,5 @@ const points = paths.map(path => svg.getPoints(path))
 // randomize the points
 const randomizedPoints = points.map(path => sketchy.randomize(path, { noise: options.noise }))
 // get the stroke from the points
-const stroke = sketchy.getStroke(randomizedPoints, { noise: options.noise })
+const stroke = freehand.getStroke(randomizedPoints)
 

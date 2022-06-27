@@ -71,4 +71,9 @@ describe("Sketchy", () => {
             [22, 38.51637732722426]]
         ))
     })
+    describe("getPathsFromSvg", () => {
+        let data
+        beforeEach(()=> data = parser.parse(FEED_SYNC_SVG))
+        it("doit pouvoir retourner tous les chemins d’un svg", () => expect(sketchy.getPathsFromSvg(data)).toEqual(jasmine.any(Array)))
+    })
 })

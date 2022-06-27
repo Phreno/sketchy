@@ -29,7 +29,7 @@ module.exports = function Sketchy() {
      * @param {String} svgPath Tracé SVG à transformer
      * @returns un tableau de points sous la forme [[x,y],[x,y],...]
      */
-    self.getPointsFromSvgPath = function getPoints(svgPath) {
+    self.getPointsFromSvgPath = (svgPath) => {
         const path = draw.path(svgPath)
         const step = 10
         const length = path.length()
@@ -38,5 +38,7 @@ module.exports = function Sketchy() {
             return [point.x, point.y]
         })
     }
+    self.getPathsFromSvg = (svgDocument) => console.log(svgDocument) || svgDocument.svg.g.path.map(path => path["@_d"])
+
     return self
 }

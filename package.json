@@ -4,11 +4,7 @@
   "description": "",
   "main": "index.js",
   "watch": {
-    "run_test": {
-      "patterns": ["spec"],
-      "extensions": ["js"],
-      "ignore": ["index.js"]
-    },
+    "test": "**/*.js",
     "run_cli": {
       "patterns": ["index.js"],
       "extensions": ["js"]
