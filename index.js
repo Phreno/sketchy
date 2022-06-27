@@ -1,8 +1,10 @@
-const package = require('./package.json');
+#!/opt/nodejs/16.14.2/bin/node
+const package = require('./package.json')
 const sketchy = require('./spec/Sketchy')
-const svg = require('./spec/sketchy')
-
 const program = require('commander')
+const fxParser = require('fast-xml-parser')
+const parser = new fxParser.XMLParser({ignoreAttributes: false})
+const freehand = require('perfect-freehand')
 
 program
     .name("sketchy")
@@ -29,9 +31,9 @@ else if (!fs.existsSync(program.input)) {
 // retrieve the svg from the file
 const svgString = fs.readFileSync(program.input, 'utf8')
 // parse the svg
-const svgDocument = svg.parse(svgString)
+const svgDocument = parser.parse(svgString)
 // get the paths from the svg
-const paths = svg.getPaths(svgDocument)
+const paths = sketchy.getPaths(svgDocument)
 // get the points from the paths
 const points = paths.map(path => svg.getPoints(path))
 // randomize the points

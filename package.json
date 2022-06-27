@@ -4,11 +4,21 @@
   "description": "",
   "main": "index.js",
   "watch": {
-    "test": "**/*.js"
+    "run_test": {
+      "patterns": ["spec"],
+      "extensions": ["js"],
+      "ignore": ["index.js"]
+    },
+    "run_cli": {
+      "patterns": ["index.js"],
+      "extensions": ["js"]
+    }
   },
   "scripts": {
     "test": "npx jasmine --fail-fast",
-    "watch": "npm-watch"
+    "test:watch": "npm-watch test",
+    "run_cli": "node index.js --input ./rsc/feed_sync.svg",
+    "run_cli:watch": "npm-watch run_cli"
   },
   "repository": {
     "type": "git",
