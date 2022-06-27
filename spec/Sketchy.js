@@ -1,7 +1,16 @@
-const freehand =  require('perfect-freehand')
-module.exports = function Sketchy(){
+const freehand = require('perfect-freehand')
+const X = 0
+const Y = 1
+const DEFAULT_RANDOM = {
+    noise: 0.5
+}
+
+
+module.exports = function Sketchy() {
     const self = {}
     self.getStroke = (points, options) => options ? freehand.getStroke(points, options) : freehand.getStroke(points)
-    self.randomize = (points) => points.map(point=>[point[0] + Math.random() * 10 - 5, point[1] + Math.random() * 10 - 5])
+    self.randomize = (points, options = DEFAULT_RANDOM) => options.noise === 0
+        ? points
+        : points.map(point => [point[X] + Math.random() * options.noise, point[Y] + Math.random() * options.noise])
     return self
 }
