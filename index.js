@@ -1,6 +1,6 @@
 const package = require('./package.json');
 const sketchy = require('./spec/Sketchy')
-const svg = require('./spec/SvgWorker')
+const svg = require('./spec/sketchy')
 
 const program = require('commander')
 
