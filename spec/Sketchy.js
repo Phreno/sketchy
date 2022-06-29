@@ -60,10 +60,11 @@ module.exports = function Sketchy() {
             yield* getValues(rest, search)
         }
         const pathIterator = getValues(source, SVG_PATH_IDENTIFIER)
-        const paths = []
+        let paths = []
         for (const path of pathIterator) paths.push(path)
         LOGGER.debug(` => ${JSON.stringify(paths)} paths`)
-        return paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
+        paths = paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
+        return paths
     }
     /**
      * cf. https://github.com/steveruizok/perfect-freehand #rendering

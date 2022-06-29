@@ -1,8 +1,20 @@
 const winston = require("winston")
+const fs = require("fs")
+
 winston.format.combine(
     winston.format.colorize(),
     winston.format.json()
   );
+
+
+winston.deleteLogFiles = ()=>{
+    fs.readdirSync("./").forEach(file => {
+        if(file.match(/\.log$/)){
+        fs.unlinkSync(`./logs/${file}`)
+        }
+    })
+}
+
 module.exports = winston.createLogger({
     format: winston.format.json(),
     transports: [
