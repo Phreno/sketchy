@@ -1,8 +1,3 @@
-const X = 0
-const Y = 1
-const DEFAULT_RANDOM = {
-    noise: 0.5
-}
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
 const SVG = require("svg.js")(window)
@@ -10,7 +5,13 @@ const SVG = require("svg.js")(window)
 const document = window.document
 const draw = SVG(document.documentElement)
 
-
+const X = 0
+const Y = 1
+const DEFAULT_RANDOM = {
+    noise: 0.5
+}
+const SVG_PATH_IDENTIFIER = 'path'
+const SVG_PATH_ATTRIBUTE = '@_d'
 
 module.exports = function Sketchy() {
     const self = {}
@@ -52,10 +53,10 @@ module.exports = function Sketchy() {
             if (typeof value === 'object') yield* getValues(value, search)
             yield* getValues(rest, search)
         }
-        const pathIterator = getValues(source, 'path')
+        const pathIterator = getValues(source, SVG_PATH_IDENTIFIER)
         const paths = []
         for (const path of pathIterator) paths.push(path)
-        return paths.flat().map(path => path["@_d"])
+        return paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
     }
     return self
 }
