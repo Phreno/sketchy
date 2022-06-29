@@ -40,12 +40,12 @@ const breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
 const weaves = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
 // get the stroke from the points
 const strokes = weaves.map(weave => freehand.getStroke(weave, {
-    size: 1,
-    thinning: 0.2
+    size: 10,
+    thinning: 0.5
 }))
 // get the svg from the stroke
 const svg = [
-    "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='100%' viewBox='0 0 100 100'>",
+    "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='100%'>",
     ...strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
     "</svg>"
 
