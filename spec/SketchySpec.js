@@ -82,7 +82,6 @@ describe("Sketchy", () => {
                     'M84,60c-20,0-41-21-41-41h11c0,15,16,30,30,30z'
                 ]
             ))
-            it("", () => console.log(sketchy.getPathsFromSvg(rsc.MAP)))
         })
         describe("WATER", () => {
             it("doit pouvoir retourner tous les chemins de WATER", () => expect(sketchy.getPathsFromSvg(rsc.WATER)).toEqual(jasmine.any(Array)))
