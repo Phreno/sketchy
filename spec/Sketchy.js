@@ -38,6 +38,11 @@ module.exports = function Sketchy() {
             return [point.x, point.y]
         })
     }
+    /**
+     * Récupère tous les chemins d'un fichier SVG récursivement
+     * @param {Object} source Le fichier SVG parsé via fast-xml-parser
+     * @returns tous les paths du fichier SVG
+     */
     self.getPathsFromSvg = (source) => {
         function* getValues(source, search) {
             const [key] = Object.keys(source)
@@ -49,11 +54,8 @@ module.exports = function Sketchy() {
         }
         const pathIterator = getValues(source, 'path')
         const paths = []
-        for (const path of pathIterator) {
-            paths.push(path)
-        }
-        const arr = paths.flat().map(path => path["@_d"])
-        return arr
+        for (const path of pathIterator) paths.push(path)
+        return paths.flat().map(path => path["@_d"])
     }
     return self
 }
