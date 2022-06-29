@@ -5,8 +5,10 @@ const program = require('commander')
 const fxParser = require('fast-xml-parser')
 const parser = new fxParser.XMLParser({ ignoreAttributes: false })
 const freehand = require('perfect-freehand')
+const pathSplitter = require("./vendor/PathSplitter")
 const fs = require('fs')
 const LOGGER = require('./vendor/Logger')
+const { exit } = require('process')
 
 program
     .name("sketchy")
@@ -43,28 +45,29 @@ else if (!fs.existsSync(options.input)) {
 
 LOGGER.level = options.log
 
-LOGGER.info("Reading input file")
+LOGGER.info("Reading input file " + options.input)
 const svgString = fs.readFileSync(options.input, 'utf8')
-LOGGER.info("Parsing input file")
+LOGGER.info("Parsing input file " + options.input)
 const svgDocument = parser.parse(svgString)
-LOGGER.info("Getting paths from input file")
-const paths = sketchy.getPathsFromSvg(svgDocument)
-LOGGER.info("Generating sketchy stroke")
+LOGGER.info("Getting paths from " + options.input)
+let paths = sketchy.getPathsFromSvg(svgDocument)
+LOGGER.info("Splitting paths into subpaths")
+paths = paths.map(path => pathSplitter(path)).flat()
+LOGGER.info("Generating sketchy stroke from " + options.input)
 const breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
-LOGGER.info("Add some noise sketchy stroke")
-const weaves = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, {
-    noise: options.noise
-}))
+LOGGER.info("Add some noise sketchy stroke " + options.noise)
+let weaves = options.noise
+    ?  breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+    : breadcrumbs
 LOGGER.info("Generating freehand stroke")
-const strokes = weaves.map(weave => freehand.getStroke(weave))
-/*, {
+const strokes = weaves.map(weave => freehand.getStroke(weave), {
     size: options.strokeSize,
     thinning: options.strokeThinning,
     smoothing: options.strokeSmoothing,
     streamline: options.strokeStreamline,
     simulatePressure: options.strokeSimulatePressure,
     last: options.strokeLast,
-}))*/
+})
 LOGGER.info("Generating output file")
 const svg = [
     "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='100%'>",
@@ -76,3 +79,4 @@ const svg = [
 ].join("\n")
 LOGGER.info("Writing output file to stdout")
 console.log(svg)
+exit(1)
