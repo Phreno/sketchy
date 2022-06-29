@@ -14,17 +14,17 @@ program
     .name("sketchy")
     .version(package.version)
     .description("A tool to generate a sketchy stroke")
-    .option('--input                    <file>', 'input file')
-    .option('--output                   <file>', 'output file', 'out.svg')
-    .option('--log                      <level>', 'log level', 'none')
-    .option('--noise                    <number>', 'Add a random zigzag to the stroke', 0)
+    .option('-i, --input             <file>', 'input file')
+    .option('-o, --output            <file>', 'output file', 'out.svg')
+    .option('-l, --log               <level>', 'log level', 'none')
     // perfect-freehand options
-    .option('--stroke-size              <number>', 'The base size (diameter) of the stroke.', 8)
-    .option('--stroke-thinning          <number>', 'The effect of pressure on the stroke\'s size.', 0.5)
-    .option('--stroke-smoothing         <number>', 'How much to soften the stroke\'s edges.', 0.5)
-    .option('--stroke-streamline        <number>', 'How much to streamline the stroke.', 0.5)
-    .option('--stroke-simulate-pressure <boolean>', 'Whether to simulate pressure based on velocity.', true)
-    .option('--stroke-last              <boolean>', 'Whether the stroke is complete.', false)
+    .option('-C, --last              <boolean>', 'Whether the stroke is complete.', false)
+    .option('-L, --streamline        <number>', 'How much to streamline the stroke.', 0.5)
+    .option('-M, --smoothing         <number>', 'How much to soften the stroke\'s edges.', 0.5)
+    .option('-N, --noise             <number>', 'Add a random zigzag to the stroke', 0)
+    .option('-P, --simulate-pressure <boolean>', 'Whether to simulate pressure based on velocity.', true)
+    .option('-S, --size              <number>', 'The base size (diameter) of the stroke.', 8)
+    .option('-T, --thinning          <number>', 'The effect of pressure on the stroke\'s size.', 0.5)
 
     .parse(process.argv)
 
@@ -60,7 +60,6 @@ let weaves = options.noise
     ? breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
     : breadcrumbs
 LOGGER.info("Generating freehand stroke")
-console.log(options)
 const strokes = weaves.map(weave => freehand.getStroke(weave), {
     size: parseFloat(options.strokeSize),
     thinning: parseFloat(options.strokeThinning),
