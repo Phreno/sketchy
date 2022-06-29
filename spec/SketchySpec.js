@@ -5,6 +5,9 @@ const parser = new fxParser.XMLParser({
 })
 const fs = require("fs")
 
+const LOGGER = require("../vendor/Logger")
+LOGGER.deleteLogFiles()
+
 const POINTS = [
     [22, 37],
     [31.47085206716809, 38.486799420560374],

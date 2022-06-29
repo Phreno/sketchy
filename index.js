@@ -24,6 +24,9 @@ program
     .option('--stroke-last <boolean>', 'Whether the stroke is complete.', false)
     .parse(process.argv)
 
+
+
+LOGGER.deleteLogFiles()
 const options = program.opts()
 // check if input file is provided
 if (!options.input) {
@@ -36,7 +39,7 @@ else if (!fs.existsSync(options.input)) {
     LOGGER.error("Input file does not exist")
     process.exit(1)
 }
-
+ 
 LOGGER.level = options.log
 
 LOGGER.info("Reading input file")
