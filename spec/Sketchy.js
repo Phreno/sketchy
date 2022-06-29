@@ -1,7 +1,7 @@
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
 const SVG = require("svg.js")(window)
-
+const LOGGER = require('../vendor/Logger')
 const document = window.document
 const draw = SVG(document.documentElement)
 
@@ -13,17 +13,7 @@ const DEFAULT_RANDOM = {
 const SVG_PATH_IDENTIFIER = 'path'
 const SVG_PATH_ATTRIBUTE = '@_d'
 
-const winston = require("winston")
-const logger = winston.createLogger({
-    level: 'debug',
-    format: winston.format.json(),
-    defaultMeta: { service: 'Sketchy' },
-    transports: [
-        new winston.transports.File({ filename: 'debug.log', level: 'debug' }),
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
-    ],
-});
+
 
 module.exports = function Sketchy() {
     const self = {}
@@ -43,7 +33,7 @@ module.exports = function Sketchy() {
      * @returns un tableau de points sous la forme [[x,y],[x,y],...]
      */
     self.getPointsFromSvgPath = (svgPath) => {
-        logger.debug(`getPointsFromSvgPath: ${svgPath}`)
+        LOGGER.debug(`getPointsFromSvgPath: ${svgPath}`)
         const path = draw.path(svgPath)
         const step = 10
         const length = path.length()
@@ -51,7 +41,7 @@ module.exports = function Sketchy() {
             const point = path.pointAt(i * step)
             return [point.x, point.y]
         })
-        logger.debug(` => ${JSON.stringify(arr)} points`)
+        LOGGER.debug(` => ${JSON.stringify(arr)} points`)
         return arr
     }
     /**
@@ -60,9 +50,8 @@ module.exports = function Sketchy() {
      * @returns tous les paths du fichier SVG
      */
     self.getPathsFromSvg = (source) => {
-        logger.debug(`getPathsFromSvg: ${JSON.stringify(source)}`)
+        LOGGER.debug(`getPathsFromSvg: ${JSON.stringify(source)}`)
         function* getValues(source, search) {
-            logger.debug(`getValues: ${JSON.stringify(search)}`)
             const [key] = Object.keys(source)
             if (key === undefined) return
             const { [key]: value, ...rest } = source
@@ -73,7 +62,7 @@ module.exports = function Sketchy() {
         const pathIterator = getValues(source, SVG_PATH_IDENTIFIER)
         const paths = []
         for (const path of pathIterator) paths.push(path)
-        logger.debug(` => ${JSON.stringify(paths)} paths`)
+        LOGGER.debug(` => ${JSON.stringify(paths)} paths`)
         return paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
     }
     /**
