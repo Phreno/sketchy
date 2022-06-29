@@ -53,7 +53,6 @@ module.exports = function Sketchy() {
             paths.push(path)
         }
         const arr = paths.flat().map(path => path["@_d"])
-        console.log(arr)
         return arr
     }
     return self
