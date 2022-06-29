@@ -6,8 +6,12 @@
   "watch": {
     "test": "**/*.js",
     "run_cli": {
-      "patterns": ["index.js"],
-      "extensions": ["js"]
+      "patterns": [
+        "index.js"
+      ],
+      "extensions": [
+        "js"
+      ]
     }
   },
   "scripts": {
@@ -27,6 +31,7 @@
   },
   "homepage": "https://github.com/Phreno/sketchy#readme",
   "devDependencies": {
+    "http-server": "^14.1.1",
     "jasmine": "^4.2.1",
     "npm-watch": "^0.11.0"
   },

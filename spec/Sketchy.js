@@ -58,5 +58,23 @@ module.exports = function Sketchy() {
         for (const path of pathIterator) paths.push(path)
         return paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
     }
+    /**
+     * cf. https://github.com/steveruizok/perfect-freehand #rendering
+     * @param {*} stroke
+     * @returns
+     */
+    self.getSvgPathFromStroke = (stroke) => {
+        if (!stroke.length) return ''
+        const d = stroke.reduce(
+            (acc, [x0, y0], i, arr) => {
+                const [x1, y1] = arr[(i + 1) % arr.length]
+                acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
+                return acc
+            },
+            ['M', ...stroke[0], 'Q']
+        )
+        d.push('Z')
+        return d.join(' ')
+    }
     return self
 }

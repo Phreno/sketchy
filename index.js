@@ -1,6 +1,6 @@
 #!/opt/nodejs/16.14.2/bin/node
 const package = require('./package.json')
-const sketchy = require('./spec/Sketchy')
+const sketchy = new require('./spec/Sketchy')()
 const program = require('commander')
 const fxParser = require('fast-xml-parser')
 const parser = new fxParser.XMLParser({ignoreAttributes: false})
@@ -33,11 +33,19 @@ const svgString = fs.readFileSync(options.input, 'utf8')
 // parse the svg
 const svgDocument = parser.parse(svgString)
 // get the paths from the svg
-const paths = sketchy.getPaths(svgDocument)
+const paths = sketchy.getPathsFromSvg(svgDocument)
 // get the points from the paths
-const points = paths.map(path => svg.getPoints(path))
+const breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
 // randomize the points
-const randomizedPoints = points.map(path => sketchy.randomize(path, { noise: options.noise }))
+const weaves = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
 // get the stroke from the points
-const stroke = freehand.getStroke(randomizedPoints)
+const strokes = weaves.map(weave => freehand.getStroke(weave))
+// get the svg from the stroke
+const svg = [
+    "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='100%' viewBox='0 0 100 100'>",
+    ...strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
+    "</svg>"
 
+].join("\n")
+// write the svg to the output file
+fs.writeFileSync(options.output, svg)
