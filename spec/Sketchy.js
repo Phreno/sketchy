@@ -13,6 +13,21 @@ const DEFAULT_RANDOM = {
 const SVG_PATH_IDENTIFIER = 'path'
 const SVG_PATH_ATTRIBUTE = '@_d'
 
+const winston = require("winston")
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+      //
+      // - Write all logs with importance level of `error` or less to `error.log`
+      // - Write all logs with importance level of `info` or less to `combined.log`
+      //
+      new winston.transports.File({ filename: 'error.log', level: 'error' }),
+      new winston.transports.File({ filename: 'combined.log' }),
+    ],
+  });
+
 module.exports = function Sketchy() {
     const self = {}
     /**
@@ -34,10 +49,12 @@ module.exports = function Sketchy() {
         const path = draw.path(svgPath)
         const step = 10
         const length = path.length()
-        return [...Array(Math.ceil(length / step)).keys()].map(i => {
+        const arr = [...Array(Math.ceil(length / step)).keys()].map(i => {
             const point = path.pointAt(i * step)
             return [point.x, point.y]
         })
+        winston.info(`${svgPath} => ${arr.length} points`)
+        return arr
     }
     /**
      * Récupère tous les chemins d'un fichier SVG récursivement

@@ -1,4 +1,4 @@
-let Sketchy = require("./Sketchy")
+const Sketchy = require("./Sketchy")
 const fxParser = require("fast-xml-parser")
 const parser = new fxParser.XMLParser({
     ignoreAttributes: false
