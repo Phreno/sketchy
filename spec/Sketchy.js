@@ -10,9 +10,20 @@ const Y = 1
 const DEFAULT_RANDOM = {
     noise: 0.5
 }
+
+const SPACE = ' '
 const SVG_PATH_IDENTIFIER = 'path'
 const SVG_PATH_ATTRIBUTE = '@_d'
+const SVG_ABSOLUTE_MOVE = 'M'
+const SVG_QUADRATIC_CURVE = 'Q'
+const SVG_CLOSE_PATH = 'Z'
 
+/**
+ * Recursively looks for a given tag in an SVG tree
+ * @param {Object} source The SVG tree
+ * @param {String} search The tag to look for
+ * @returns An array of all the value found
+ */
 function* getValues(source, search) {
     const [key] = Object.keys(source)
     if (key === undefined) return
@@ -21,7 +32,6 @@ function* getValues(source, search) {
     if (typeof value === 'object') yield* getValues(value, search)
     yield* getValues(rest, search)
 }
-
 
 module.exports = function Sketchy() {
     const self = {}
@@ -50,7 +60,17 @@ module.exports = function Sketchy() {
         })
         return arr
     }
+    /**
+     * Get all the points tags in an SVG tree
+     * @param {Object} source The SVG tree
+     * @returns An array of all the value found
+     */
     self.getPointsFromSvg = (source) => [...getValues(source, "@_points")]
+    /**
+     * Parse SVG points to an array of points
+     * @param {Array} points
+     * @returns An array of points
+     */
     self.getPointsFromSvgPoints = (points) =>
         points
             .map(coords => coords.split(/\s+/)      // '1,2 3,4' => ['1,2', '3,4']
@@ -65,7 +85,6 @@ module.exports = function Sketchy() {
         [...getValues(source, SVG_PATH_IDENTIFIER)]
             .flat()
             .map(path => path[SVG_PATH_ATTRIBUTE])
-
     /**
      * cf. https://github.com/steveruizok/perfect-freehand #rendering
      * @param {*} stroke
@@ -79,10 +98,11 @@ module.exports = function Sketchy() {
                 acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
                 return acc
             },
-            ['M', ...stroke[0], 'Q']
+            [SVG_ABSOLUTE_MOVE, ...stroke[0], SVG_QUADRATIC_CURVE]
         )
-        d.push('Z')
-        return d.join(' ')
+
+        d.push(SVG_CLOSE_PATH)
+        return d.join(SPACE)
     }
     return self
 }
