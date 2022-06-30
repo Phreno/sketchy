@@ -59,12 +59,12 @@ let paths = [], points = []
 
 startTimer()
 paths = sketchy.getPathsFromSvg(svgDocument)
-LOGGER.info(stopTimer() + "*** Extracting paths")
+LOGGER.info(stopTimer() + "*** Extracting paths: " + paths.length)
 //LOGGER.debug(JSON.stringify(paths, null, 2))
 
 startTimer()
 paths = paths.map(path => pathSplitter(path)).flat()
-LOGGER.info(stopTimer() + "Splitting paths into subpaths")
+LOGGER.info(stopTimer() + "Splitting paths into subpaths: " + paths.length)
 LOGGER.debug(JSON.stringify(paths, null, 2))
 
 startTimer()
@@ -74,7 +74,7 @@ LOGGER.info(stopTimer() + "Parsing paths")
 
 startTimer()
 points = sketchy.getPointsFromSvg(svgDocument)
-LOGGER.info(stopTimer() + "*** Extracting points")
+LOGGER.info(stopTimer() + "*** Extracting points: " + points.length)
 //LOGGER.debug(JSON.stringify(points, null, 2))
 
 startTimer()

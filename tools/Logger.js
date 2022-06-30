@@ -8,7 +8,7 @@ winston.format.combine(
 
 
   const logger = winston.createLogger({
-      format: winston.format.json(),
+      format: winston.format.prettyPrint(),
     transports: [
         new winston.transports.Console({format: winston.format.cli() }),
         new winston.transports.File({ filename: 'sketchy.debug.log', level: 'debug' }),
