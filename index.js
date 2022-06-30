@@ -69,20 +69,27 @@ LOGGER.debug(JSON.stringify(paths, null, 2))
 
 
 startTimer()
+paths =  paths.map(path => sketchy.getPointsFromSvgPath(path))
+LOGGER.info(stopTimer() + "Parsing paths")
+LOGGER.debug(JSON.stringify(paths, null, 2))
+
+startTimer()
 let points = sketchy.getPointsFromSvg(svgDocument)
 LOGGER.info(stopTimer() + "*** Extracting points ***")
 LOGGER.debug(JSON.stringify(points, null, 2))
 
 startTimer()
 points = points.map(point => sketchy.getPointsFromSvgPoints(point))
+LOGGER.info(stopTimer() + "Parsing points")
+LOGGER.debug(JSON.stringify(points, null, 2))
+
 
 startTimer()
-let breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
+let breadcrumbs = [...paths, ...points]
 if (options.noise) {
-    LOGGER.info("Activate noise " + options.noise)
     breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+    LOGGER.info(stopTimer() + "Adding noise")
 }
-LOGGER.info(stopTimer() + "Extracting breadcrumbs ")
 LOGGER.debug(JSON.stringify(breadcrumbs, null, 2))
 
 startTimer()
