@@ -5,7 +5,7 @@ const parser = new fxParser.XMLParser({
 })
 const fs = require("fs")
 
-const LOGGER = require("../vendor/Logger")
+const LOGGER = require("../tools/Logger")
 LOGGER.deleteLogFiles()
 
 const POINTS = [
