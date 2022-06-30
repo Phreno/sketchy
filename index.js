@@ -26,11 +26,9 @@ program
     .option('-N, --noise             <number>', 'add a random zigzag to the stroke')
     .option('-P, --simulate-pressure', 'whether to simulate pressure based on velocity')
     .option('-S, --size              <number>', 'the base size (diameter) of the stroke')
+    .option('-Z, --step-size         <number>', 'distance between breadcrumbs points when working with a path')
     .option('-T, --thinning          <number>', 'the effect of pressure on the stroke\'s size')
-
     .parse(process.argv)
-
-
 
 // LOGGER.deleteLogFiles()
 const options = program.opts()
@@ -59,30 +57,30 @@ LOGGER.debug(JSON.stringify(svgDocument, null, 2))
 
 let paths = [], points = []
 
-    startTimer()
-    paths = sketchy.getPathsFromSvg(svgDocument)
-    LOGGER.info(stopTimer() + "*** Extracting paths")
-    //LOGGER.debug(JSON.stringify(paths, null, 2))
+startTimer()
+paths = sketchy.getPathsFromSvg(svgDocument)
+LOGGER.info(stopTimer() + "*** Extracting paths")
+//LOGGER.debug(JSON.stringify(paths, null, 2))
 
-    startTimer()
-    paths = paths.map(path => pathSplitter(path)).flat()
-    LOGGER.info(stopTimer() + "Splitting paths into subpaths")
-    LOGGER.debug(JSON.stringify(paths, null, 2))
+startTimer()
+paths = paths.map(path => pathSplitter(path)).flat()
+LOGGER.info(stopTimer() + "Splitting paths into subpaths")
+LOGGER.debug(JSON.stringify(paths, null, 2))
 
-    startTimer()
-    paths = paths.map(path => sketchy.getPointsFromSvgPath(path))
-    LOGGER.info(stopTimer() + "Parsing paths")
-    //LOGGER.debug(JSON.stringify(paths, null, 2))
+startTimer()
+paths = paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
+LOGGER.info(stopTimer() + "Parsing paths")
+//LOGGER.debug(JSON.stringify(paths, null, 2))
 
-    startTimer()
-    points = sketchy.getPointsFromSvg(svgDocument)
-    LOGGER.info(stopTimer() + "*** Extracting points")
-    //LOGGER.debug(JSON.stringify(points, null, 2))
+startTimer()
+points = sketchy.getPointsFromSvg(svgDocument)
+LOGGER.info(stopTimer() + "*** Extracting points")
+//LOGGER.debug(JSON.stringify(points, null, 2))
 
-    startTimer()
-    points = points.map(point => sketchy.getPointsFromSvgPoints(point))
-    LOGGER.info(stopTimer() + "Parsing points")
-    //LOGGER.debug(JSON.stringify(points, null, 2))
+startTimer()
+points = points.map(point => sketchy.getPointsFromSvgPoints(point))
+LOGGER.info(stopTimer() + "Parsing points")
+//LOGGER.debug(JSON.stringify(points, null, 2))
 
 
 startTimer()
@@ -111,8 +109,6 @@ startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
 LOGGER.info(stopTimer() + "Writing output file " + options.output)
 
-if (options.dump) {
-    console.log(svg)
-}
+options.dump && console.log(svg)
 
 exit(0)

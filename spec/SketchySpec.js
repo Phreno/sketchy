@@ -5,9 +5,6 @@ const parser = new fxParser.XMLParser({
 })
 const fs = require("fs")
 
-const LOGGER = require("../tools/Logger")
-const { data } = require("../tools/Logger")
-
 const POINTS = [
     [22, 37],
     [31.47085206716809, 38.486799420560374],
@@ -38,7 +35,6 @@ const rsc = {
     MAP: parser.parse(file.MAP),
     STREAMLINES: parser.parse(file.STREAMLINES)
 }
-
 
 describe("Sketchy", () => {
     let sketchy
