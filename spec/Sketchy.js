@@ -41,6 +41,9 @@ module.exports = function Sketchy() {
         })
         return arr
     }
+    self.getPointsFromSvg=(source)=>{
+
+    }
     /**
      * Récupère tous les chemins d'un fichier SVG récursivement
      * @param {Object} source Le fichier SVG parsé via fast-xml-parser

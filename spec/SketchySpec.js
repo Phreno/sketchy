@@ -76,6 +76,9 @@ describe("Sketchy", () => {
             [22, 38.51637732722426]]
         ))
     })
+    describe("getPointsFromSvg", ()=>{
+        it("doit être une fonction", () => expect(sketchy.getPointsFromSvg).toEqual(jasmine.any(Function)));
+    })
     describe("getPathsFromSvg", () => {
         describe("FEED SYNC", () => {
             it("doit pouvoir retourner tous les chemins de FEED SYNC", () => expect(sketchy.getPathsFromSvg(rsc.FEED_SYNC)).toEqual(jasmine.any(Array)))
