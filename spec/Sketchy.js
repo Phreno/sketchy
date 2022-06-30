@@ -42,7 +42,7 @@ module.exports = function Sketchy() {
         return arr
     }
     self.getPointsFromSvg=(source)=>{
-
+        return []
     }
     /**
      * Récupère tous les chemins d'un fichier SVG récursivement

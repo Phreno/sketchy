@@ -28,13 +28,15 @@ const POINTS = [
 const file = {
     FEED_SYNC: fs.readFileSync("rsc/feed_sync.svg", "utf8"),
     WATER: fs.readFileSync("rsc/water.svg", "utf8"),
-    MAP: fs.readFileSync("rsc/map.svg", "utf8")
+    MAP: fs.readFileSync("rsc/map.svg", "utf8"),
+    STREAMLINES: fs.readFileSync("rsc/streamlines.svg", "utf8")
 }
 
 const rsc = {
     FEED_SYNC: parser.parse(file.FEED_SYNC),
     WATER: parser.parse(file.WATER),
-    MAP: parser.parse(file.MAP)
+    MAP: parser.parse(file.MAP),
+    STREAMLINES: parser.parse(file.STREAMLINES)
 }
 
 
@@ -78,6 +80,7 @@ describe("Sketchy", () => {
     })
     describe("getPointsFromSvg", ()=>{
         it("doit être une fonction", () => expect(sketchy.getPointsFromSvg).toEqual(jasmine.any(Function)));
+        it("doit retourner un tableau", () => expect(sketchy.getPointsFromSvg(rsc.STREAMLINES)).toEqual(jasmine.any(Array)));
     })
     describe("getPathsFromSvg", () => {
         describe("FEED SYNC", () => {
