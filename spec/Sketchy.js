@@ -1,7 +1,6 @@
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
 const SVG = require("svg.js")(window)
-const LOGGER = require('../vendor/Logger')
 const document = window.document
 const draw = SVG(document.documentElement)
 

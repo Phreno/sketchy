@@ -5,10 +5,11 @@ const program = require('commander')
 const fxParser = require('fast-xml-parser')
 const parser = new fxParser.XMLParser({ ignoreAttributes: false })
 const freehand = require('perfect-freehand')
-const pathSplitter = require("./vendor/PathSplitter")
+const pathSplitter = require("./tools/PathSplitter")
 const fs = require('fs')
-const LOGGER = require('./vendor/Logger')
+const LOGGER = require('./tools/Logger')
 const { exit } = require('process')
+const { startTimer, stopTimer } = require("./tools/timer")
 
 program
     .name("sketchy")
@@ -43,15 +44,6 @@ if (!options.input) {
 else if (!fs.existsSync(options.input)) {
     LOGGER.error("Input file does not exist")
     process.exit(1)
-}
-
-let timer
-const startTimer = () => {
-    timer = new Date()
-}
-const stopTimer = () => {
-    const time = new Date() - timer
-    return `(${time}ms)\t`
 }
 
 startTimer()
@@ -109,7 +101,7 @@ startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
 LOGGER.info(stopTimer() + "Writing output file " + options.output)
 
-if(options.dump){
+if (options.dump) {
     console.log(svg)
 }
 
