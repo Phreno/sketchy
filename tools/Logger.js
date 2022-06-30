@@ -11,9 +11,9 @@ winston.format.combine(
       format: winston.format.json(),
     transports: [
         new winston.transports.Console({format: winston.format.cli() }),
-        new winston.transports.File({ filename: 'debug.log', level: 'debug' }),
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
+        new winston.transports.File({ filename: 'sketchy.debug.log', level: 'debug' }),
+        new winston.transports.File({ filename: 'sketchy.error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'sketchy.log' }),
     ],
 });
 

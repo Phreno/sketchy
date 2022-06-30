@@ -7,7 +7,6 @@ const fs = require("fs")
 
 const LOGGER = require("../tools/Logger")
 const { data } = require("../tools/Logger")
-LOGGER.deleteLogFiles()
 
 const POINTS = [
     [22, 37],

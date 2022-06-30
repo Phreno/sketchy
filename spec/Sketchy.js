@@ -11,6 +11,7 @@ const DEFAULT_RANDOM = {
     noise: 0.5
 }
 
+const EMPTY = ''
 const SPACE = ' '
 const SVG_PATH_IDENTIFIER = 'path'
 const SVG_PATH_ATTRIBUTE = '@_d'
@@ -90,7 +91,7 @@ module.exports = function Sketchy() {
      * @returns
      */
     self.getSvgPathFromStroke = (stroke) => {
-        if (!stroke.length) return ''
+        if (!stroke.length) return EMPTY
         const d = stroke.reduce(
             (acc, [x0, y0], i, arr) => {
                 const [x1, y1] = arr[(i + 1) % arr.length]
