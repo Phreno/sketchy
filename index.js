@@ -17,6 +17,7 @@ program
     .option('-i, --input             <file>', 'input file')
     .option('-o, --output            <file>', 'output file', 'out.svg')
     .option('-l, --log               <level>', 'log level', 'none')
+    .option('-d, --dump              <boolean>', 'display result on stdout', false)
     // perfect-freehand options
     .option('-C, --last              <boolean>', 'Whether the stroke is complete.', false)
     .option('-L, --streamline        <number>', 'How much to streamline the stroke.', 0.5)
@@ -44,14 +45,10 @@ else if (!fs.existsSync(options.input)) {
     process.exit(1)
 }
 
-// add a timer
 let timer
-
-// a function to start the timer
 const startTimer = () => {
     timer = new Date()
 }
-
 const stopTimer = () => {
     const time = new Date() - timer
     return `(${time}ms)\t`
@@ -61,18 +58,22 @@ startTimer()
 LOGGER.level = options.log
 const svgString = fs.readFileSync(options.input, 'utf8')
 LOGGER.info(stopTimer() + "Reading input file " + options.input)
+LOGGER.debug(svgString)
 
 startTimer()
 const svgDocument = parser.parse(svgString)
 LOGGER.info(stopTimer() + "Parsing")
+LOGGER.debug(JSON.stringify(svgDocument, null, 2))
 
 startTimer()
 let paths = sketchy.getPathsFromSvg(svgDocument)
 LOGGER.info(stopTimer() + "Extracting paths")
+LOGGER.debug(JSON.stringify(paths, null, 2))
 
 startTimer()
 paths = paths.map(path => pathSplitter(path)).flat()
 LOGGER.info(stopTimer() + "Splitting paths into subpaths")
+LOGGER.debug(JSON.stringify(paths, null, 2))
 
 startTimer()
 let breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
@@ -81,6 +82,7 @@ if (options.noise) {
     breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
 }
 LOGGER.info(stopTimer() + "Extracting breadcrumbs ")
+LOGGER.debug(JSON.stringify(breadcrumbs, null, 2))
 
 startTimer()
 const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
@@ -92,6 +94,7 @@ const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
     last: options.strokeLast,
 })
 LOGGER.info(stopTimer() + "Generating freehand stroke")
+LOGGER.debug(JSON.stringify(strokes, null, 2))
 
 startTimer()
 const svg = [
@@ -100,9 +103,14 @@ const svg = [
     "</svg>"
 ].join("\n")
 LOGGER.info(stopTimer() + "Rendering SVG document")
+LOGGER.debug(svg)
 
 startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
 LOGGER.info(stopTimer() + "Writing output file " + options.output)
+
+if(options.dump){
+    console.log(svg)
+}
 
 exit(0)

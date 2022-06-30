@@ -33,7 +33,6 @@ module.exports = function Sketchy() {
      * @returns un tableau de points sous la forme [[x,y],[x,y],...]
      */
     self.getPointsFromSvgPath = (svgPath) => {
-        LOGGER.debug(`getPointsFromSvgPath: ${svgPath}`)
         const path = draw.path(svgPath)
         const step = 10
         const length = path.length()
@@ -41,7 +40,6 @@ module.exports = function Sketchy() {
             const point = path.pointAt(i * step)
             return [point.x, point.y]
         })
-        LOGGER.debug(` => ${JSON.stringify(arr)} points`)
         return arr
     }
     /**
@@ -50,7 +48,6 @@ module.exports = function Sketchy() {
      * @returns tous les paths du fichier SVG
      */
     self.getPathsFromSvg = (source) => {
-        LOGGER.debug(`getPathsFromSvg: ${JSON.stringify(source)}`)
         function* getValues(source, search) {
             const [key] = Object.keys(source)
             if (key === undefined) return
@@ -62,7 +59,6 @@ module.exports = function Sketchy() {
         const pathIterator = getValues(source, SVG_PATH_IDENTIFIER)
         let paths = []
         for (const path of pathIterator) paths.push(path)
-        LOGGER.debug(` => ${JSON.stringify(paths)} paths`)
         paths = paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
         return paths
     }
