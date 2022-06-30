@@ -44,23 +44,50 @@ else if (!fs.existsSync(options.input)) {
     process.exit(1)
 }
 
+// add a timer
+let timer
+
+// a function to start the timer
+const startTimer = () => {
+    timer = new Date()
+}
+
+const stopTimer = () => {
+    const time = new Date() - timer
+    return `\t(${time}ms)`
+}
+
+
+
+startTimer()
 LOGGER.level = options.log
-LOGGER.info("Reading input file " + options.input)
 const svgString = fs.readFileSync(options.input, 'utf8')
-LOGGER.info("Parsing input file " + options.input)
+LOGGER.info("Reading input file " + options.input + stopTimer())
+
+
+
+startTimer()
 const svgDocument = parser.parse(svgString)
-LOGGER.info("Getting paths from " + options.input)
+LOGGER.info("Parsing" + stopTimer())
+
+startTimer()
 let paths = sketchy.getPathsFromSvg(svgDocument)
-LOGGER.info("Splitting paths into subpaths")
+LOGGER.info("Extracting paths"+stopTimer())
+
+startTimer()
 paths = paths.map(path => pathSplitter(path)).flat()
-LOGGER.info("Generating sketchy stroke from " + options.input)
-const breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
-LOGGER.info("Add some noise sketchy stroke " + options.noise)
-let weaves = options.noise
-    ? breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
-    : breadcrumbs
-LOGGER.info("Generating freehand stroke")
-const strokes = weaves.map(weave => freehand.getStroke(weave), {
+LOGGER.info("Splitting paths into subpaths"+stopTimer())
+
+startTimer()
+let breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
+if(options.noise){
+    LOGGER.info("Activate noise " + options.noise)
+    breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+}
+LOGGER.info("Extracting breadcrumbs " + stopTimer())
+
+startTimer()
+const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
     size: parseFloat(options.strokeSize),
     thinning: parseFloat(options.strokeThinning),
     smoothing: parseFloat(options.strokeSmoothing),
@@ -68,14 +95,18 @@ const strokes = weaves.map(weave => freehand.getStroke(weave), {
     simulatePressure: options.strokeSimulatePressure,
     last: options.strokeLast,
 })
-LOGGER.info("Rendering svg from sketchy stroke")
+LOGGER.info("Generating freehand stroke" +stopTimer())
+
+startTimer()
 const svg = [
     "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
     ...strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
     "</svg>"
 ].join("\n")
+LOGGER.info("Rendering SVG document" + stopTimer())
 
-LOGGER.info("Writing output file")
+startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
+LOGGER.info("Writing output file " + options.output + stopTimer())
 
 exit(0)
