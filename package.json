@@ -17,7 +17,7 @@
   "scripts": {
     "test": "npx jasmine --fail-fast",
     "test:watch": "npm-watch test",
-    "run_cli": "node index.js --input ./rsc/feed_sync.svg",
+    "run_cli": "node index.js -i ./rsc/streamlines.svg -d -l info",
     "run_cli:watch": "npm-watch run_cli"
   },
   "repository": {

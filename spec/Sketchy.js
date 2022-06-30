@@ -72,10 +72,9 @@ module.exports = function Sketchy() {
      * @returns An array of points
      */
     self.getPointsFromSvgPoints = (points) =>
-        points
-            .map(coords => coords.split(/\s+/)      // '1,2 3,4' => ['1,2', '3,4']
+        points.split(/\s+/)                         // '1,2 3,4' => ['1,2', '3,4']
                 .map(el => el.split(',')            // ['1,2', '3,4'] => [["1","2"], ["3","4"]]
-                    .map(el => parseFloat(el))))    // [["1","2"], ["3","4"]] => [[1,2], [3,4]]
+                    .map(el => parseFloat(el)))     // [["1","2"], ["3","4"]] => [[1,2], [3,4]]
     /**
      * Récupère tous les chemins d'un fichier SVG récursivement
      * @param {Object} source Le fichier SVG parsé via fast-xml-parser
