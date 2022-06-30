@@ -6,6 +6,7 @@ const parser = new fxParser.XMLParser({
 const fs = require("fs")
 
 const LOGGER = require("../tools/Logger")
+const { data } = require("../tools/Logger")
 LOGGER.deleteLogFiles()
 
 const POINTS = [
@@ -58,7 +59,6 @@ describe("Sketchy", () => {
         it("ne doit pas retourner le meme tableau lorsque appelé deux fois de suite", () => expect(sketchy.randomize(POINTS)).not.toEqual(sketchy.randomize(POINTS)))
     })
     describe("getPointsFromSvgPath", () => {
-        let data
         it("doit être une fonction", () => expect(sketchy.getPointsFromSvgPath).toEqual(jasmine.any(Function)));
         it("doit retourner un tableau", () => expect(sketchy.getPointsFromSvgPath(rsc.FEED_SYNC.svg.g.path[0]["@_d"])).toEqual(jasmine.any(Array)));
         it("doit retourner un tableau correspondant au bon path avec FEED_SYNC_SVG", () => expect(sketchy.getPointsFromSvgPath(rsc.FEED_SYNC.svg.g.path[0]["@_d"])).toEqual(
@@ -79,7 +79,16 @@ describe("Sketchy", () => {
         ))
     })
     describe("getPointsFromSvgPoints", () => {
+        let data
+        beforeEach(()=>data = sketchy.getPointsFromSvg(rsc.STREAMLINES))
         it("doit être une fonction", () => expect(sketchy.getPointsFromSvgPoints).toEqual(jasmine.any(Function)));
+        it("doit retourner un tableau", () => expect(sketchy.getPointsFromSvgPoints(data)).toEqual(jasmine.any(Array)));
+        it("doit parser correctement ['1,2 3,4', '5,6 7,8']", ()=>{
+            expect(sketchy.getPointsFromSvgPoints([
+                "1,2 3,4",
+                "5,6 7,8"
+            ])).toEqual([[[1,2],[3,4]],[[5,6],[7,8]]])
+        })
     })
     describe("getPointsFromSvg", ()=>{
         it("doit être une fonction", () => expect(sketchy.getPointsFromSvg).toEqual(jasmine.any(Function)));
