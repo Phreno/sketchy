@@ -78,9 +78,14 @@ describe("Sketchy", () => {
             [22, 38.51637732722426]]
         ))
     })
+    describe("getPointsFromSvgPoints", () => {
+        it("doit être une fonction", () => expect(sketchy.getPointsFromSvgPoints).toEqual(jasmine.any(Function)));
+    })
     describe("getPointsFromSvg", ()=>{
         it("doit être une fonction", () => expect(sketchy.getPointsFromSvg).toEqual(jasmine.any(Function)));
         it("doit retourner un tableau", () => expect(sketchy.getPointsFromSvg(rsc.STREAMLINES)).toEqual(jasmine.any(Array)));
+        it("doit retourner tous les points de streamlines", ()=> expect(sketchy.getPointsFromSvg(rsc.STREAMLINES).length).toEqual(409))
+        it("doit retourner une ligne de points valide avec streamlines", ()=> expect(sketchy.getPointsFromSvg(rsc.STREAMLINES)[0]).toEqual('80.96,521.9 78,521.52 66,521.26 36,521.12 0,521.08'))
     })
     describe("getPathsFromSvg", () => {
         describe("FEED SYNC", () => {

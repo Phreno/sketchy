@@ -1,3 +1,4 @@
+const { ConsoleReporter } = require('jasmine')
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
 const SVG = require("svg.js")(window)
@@ -12,6 +13,14 @@ const DEFAULT_RANDOM = {
 const SVG_PATH_IDENTIFIER = 'path'
 const SVG_PATH_ATTRIBUTE = '@_d'
 
+function* getValues(source, search) {
+    const [key] = Object.keys(source)
+    if (key === undefined) return
+    const { [key]: value, ...rest } = source
+    if (key === search) yield value
+    if (typeof value === 'object') yield* getValues(value, search)
+    yield* getValues(rest, search)
+}
 
 
 module.exports = function Sketchy() {
@@ -41,29 +50,18 @@ module.exports = function Sketchy() {
         })
         return arr
     }
-    self.getPointsFromSvg=(source)=>{
-        return []
-    }
+    self.getPointsFromSvg = (source) => [...getValues(source, "@_points")]
+    self.getPointsFromSvgPoints = (points)=>{}
     /**
      * Récupère tous les chemins d'un fichier SVG récursivement
      * @param {Object} source Le fichier SVG parsé via fast-xml-parser
      * @returns tous les paths du fichier SVG
      */
-    self.getPathsFromSvg = (source) => {
-        function* getValues(source, search) {
-            const [key] = Object.keys(source)
-            if (key === undefined) return
-            const { [key]: value, ...rest } = source
-            if (key === search) yield value
-            if (typeof value === 'object') yield* getValues(value, search)
-            yield* getValues(rest, search)
-        }
-        const pathIterator = getValues(source, SVG_PATH_IDENTIFIER)
-        let paths = []
-        for (const path of pathIterator) paths.push(path)
-        paths = paths.flat().map(path => path[SVG_PATH_ATTRIBUTE])
-        return paths
-    }
+    self.getPathsFromSvg = (source) =>
+        [...getValues(source, SVG_PATH_IDENTIFIER)]
+            .flat()
+            .map(path => path[SVG_PATH_ATTRIBUTE])
+
     /**
      * cf. https://github.com/steveruizok/perfect-freehand #rendering
      * @param {*} stroke
