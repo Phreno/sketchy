@@ -54,37 +54,33 @@ const startTimer = () => {
 
 const stopTimer = () => {
     const time = new Date() - timer
-    return `\t(${time}ms)`
+    return `(${time}ms)\t`
 }
-
-
 
 startTimer()
 LOGGER.level = options.log
 const svgString = fs.readFileSync(options.input, 'utf8')
-LOGGER.info("Reading input file " + options.input + stopTimer())
-
-
+LOGGER.info(stopTimer() + "Reading input file " + options.input)
 
 startTimer()
 const svgDocument = parser.parse(svgString)
-LOGGER.info("Parsing" + stopTimer())
+LOGGER.info(stopTimer() + "Parsing")
 
 startTimer()
 let paths = sketchy.getPathsFromSvg(svgDocument)
-LOGGER.info("Extracting paths"+stopTimer())
+LOGGER.info(stopTimer() + "Extracting paths")
 
 startTimer()
 paths = paths.map(path => pathSplitter(path)).flat()
-LOGGER.info("Splitting paths into subpaths"+stopTimer())
+LOGGER.info(stopTimer() + "Splitting paths into subpaths")
 
 startTimer()
 let breadcrumbs = paths.map(path => sketchy.getPointsFromSvgPath(path))
-if(options.noise){
+if (options.noise) {
     LOGGER.info("Activate noise " + options.noise)
     breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
 }
-LOGGER.info("Extracting breadcrumbs " + stopTimer())
+LOGGER.info(stopTimer() + "Extracting breadcrumbs ")
 
 startTimer()
 const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
@@ -95,7 +91,7 @@ const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
     simulatePressure: options.strokeSimulatePressure,
     last: options.strokeLast,
 })
-LOGGER.info("Generating freehand stroke" +stopTimer())
+LOGGER.info(stopTimer() + "Generating freehand stroke")
 
 startTimer()
 const svg = [
@@ -103,10 +99,10 @@ const svg = [
     ...strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
     "</svg>"
 ].join("\n")
-LOGGER.info("Rendering SVG document" + stopTimer())
+LOGGER.info(stopTimer() + "Rendering SVG document")
 
 startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
-LOGGER.info("Writing output file " + options.output + stopTimer())
+LOGGER.info(stopTimer() + "Writing output file " + options.output)
 
 exit(0)
