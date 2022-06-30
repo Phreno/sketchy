@@ -5,6 +5,6 @@ const startTimer = () => {
 exports.startTimer = startTimer;
 const stopTimer = () => {
     const time = new Date() - timer;
-    return `(${time}ms)\t`;
+    return `(${time}ms) `;
 };
 exports.stopTimer = stopTimer;
