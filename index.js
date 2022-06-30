@@ -18,15 +18,15 @@ program
     .option('-i, --input             <file>', 'input file')
     .option('-o, --output            <file>', 'output file', 'out.svg')
     .option('-l, --log               <level>', 'log level', 'none')
-    .option('-d, --dump              <boolean>', 'display result on stdout', false)
+    .option('-d, --dump', 'display result on stdout')
     // perfect-freehand options
-    .option('-C, --last              <boolean>', 'Whether the stroke is complete.', false)
-    .option('-L, --streamline        <number>', 'How much to streamline the stroke.', 0.5)
-    .option('-M, --smoothing         <number>', 'How much to soften the stroke\'s edges.', 0.5)
-    .option('-N, --noise             <number>', 'Add a random zigzag to the stroke', 0)
-    .option('-P, --simulate-pressure <boolean>', 'Whether to simulate pressure based on velocity.', true)
-    .option('-S, --size              <number>', 'The base size (diameter) of the stroke.', 8)
-    .option('-T, --thinning          <number>', 'The effect of pressure on the stroke\'s size.', 0.5)
+    .option('-C, --last              <boolean>', 'whether the stroke is complete')
+    .option('-L, --streamline        <number>', 'how much to streamline the stroke')
+    .option('-M, --smoothing         <number>', 'how much to soften the stroke\'s edges')
+    .option('-N, --noise             <number>', 'add a random zigzag to the stroke')
+    .option('-P, --simulate-pressure <boolean>', 'whether to simulate pressure based on velocity')
+    .option('-S, --size              <number>', 'the base size (diameter) of the stroke')
+    .option('-T, --thinning          <number>', 'the effect of pressure on the stroke\'s size')
 
     .parse(process.argv)
 
@@ -77,14 +77,7 @@ LOGGER.info(stopTimer() + "Extracting breadcrumbs ")
 LOGGER.debug(JSON.stringify(breadcrumbs, null, 2))
 
 startTimer()
-const strokes = breadcrumbs.map(weave => freehand.getStroke(weave), {
-    size: parseFloat(options.strokeSize),
-    thinning: parseFloat(options.strokeThinning),
-    smoothing: parseFloat(options.strokeSmoothing),
-    streamline: parseFloat(options.strokeStreamline),
-    simulatePressure: options.strokeSimulatePressure,
-    last: options.strokeLast,
-})
+const strokes = breadcrumbs.map(weave => freehand.getStroke(weave, options))
 LOGGER.info(stopTimer() + "Generating freehand stroke")
 LOGGER.debug(JSON.stringify(strokes, null, 2))
 
