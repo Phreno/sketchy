@@ -1,15 +1,17 @@
 #!/opt/nodejs/16.14.2/bin/node
-const package = require('./package.json')
-const sketchy = new require('./spec/Sketchy')()
+// vendor
 const program = require('commander')
 const fxParser = require('fast-xml-parser')
 const parser = new fxParser.XMLParser({ ignoreAttributes: false })
-const freehand = require('perfect-freehand')
-const pathSplitter = require("./tools/PathSplitter")
-const fs = require('fs')
-const LOGGER = require('./tools/Logger')
 const { exit } = require('process')
-const { startTimer, stopTimer } = require("./tools/timer")
+const freehand = require('perfect-freehand')
+const fs = require('fs')
+const pointInSvgPolygon = require("point-in-svg-polygon");
+// lib
+const package = require('../package.json')
+const sketchy = new require('../spec/Sketchy')()
+const LOGGER = require('../tools/Logger')
+const { startTimer, stopTimer } = require("../tools/timer")
 
 program
     .name("sketchy")
@@ -19,6 +21,7 @@ program
     .option('-o, --output            <file>', 'output file', 'out.svg')
     .option('-l, --log               <none / info / debug>', 'log level', 'none')
     .option('-d, --dump', 'display result on stdout')
+
     // perfect-freehand options
     .option('-C, --last', 'whether the stroke is complete')
     .option('-L, --streamline        <number>', 'how much to streamline the stroke')
@@ -53,62 +56,47 @@ LOGGER.debug(svgString)
 startTimer()
 const svgDocument = parser.parse(svgString)
 LOGGER.info(stopTimer() + "Parsing")
-LOGGER.debug(JSON.stringify(svgDocument, null, 2))
 
-let paths = [], points = []
+let paths = []
 
 startTimer()
 paths = sketchy.getPathsFromSvg(svgDocument)
 LOGGER.info(stopTimer() + "*** Extracting paths: " + paths.length)
-//LOGGER.debug(JSON.stringify(paths, null, 2))
 
+// render a grid of points over the SVG document
+// assume a 1024x1024 grid
 startTimer()
-paths = paths.map(path => pathSplitter(path)).flat()
-LOGGER.info(stopTimer() + "Splitting paths into subpaths: " + paths.length)
-LOGGER.debug(JSON.stringify(paths, null, 2))
+const points = [], range =[...Array(103).keys()].map(e=>e*10)
+range.forEach(x=>range.forEach(y=>points.push([x,y])))
+LOGGER.info(stopTimer() + "*** Generating grid of " + points.length + " points spaced by " + options.stepSize + "px")
 
+
+const scribbles = []
+// foreach path in paths
 startTimer()
-paths = paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
-LOGGER.info(stopTimer() + "Parsing paths")
-//LOGGER.debug(JSON.stringify(paths, null, 2))
-
-startTimer()
-points = sketchy.getPointsFromSvg(svgDocument)
-LOGGER.info(stopTimer() + "*** Extracting points: " + points.length)
-//LOGGER.debug(JSON.stringify(points, null, 2))
-
-startTimer()
-points = points.map(point => sketchy.getPointsFromSvgPoints(point))
-LOGGER.info(stopTimer() + "Parsing points")
-//LOGGER.debug(JSON.stringify(points, null, 2))
-
-
-startTimer()
-let breadcrumbs = [...paths, ...points]
-if (options.noise) {
-    breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
-    LOGGER.info(stopTimer() + "Adding noise")
-}
-//LOGGER.debug(JSON.stringify(breadcrumbs, null, 2))
-
-startTimer()
-const strokes = breadcrumbs.map(weave => freehand.getStroke(weave, options))
-LOGGER.info(stopTimer() + "*** Generating freehand stroke")
-//LOGGER.debug(JSON.stringify(strokes, null, 2))
+paths.forEach(path=>{
+    // collect all grids points that are within the path
+ let heatMap = []
+    points.forEach(point=>{
+        if (pointInSvgPolygon(point, path)) heatMap.push(point)
+        heatMap.sort(()=>Math.random()-0.5)
+        // split the heat map into chunks of size 5
+        const chunks = heatMap.reduce((acc, cur, i)=>{
+            if (i % 5 === 0) acc.push([cur])
+            else acc[acc.length-1].push(cur)
+            return acc
+        })
+        scribbles.push(chunks.map(chunk=>freehand(chunk, options)))
+    })
+})
+LOGGER.info(stopTimer() + "*** Generating scribbles: " + scribbles.length)
 
 startTimer()
 const svg = [
-    "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
-    ...strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
+    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
+    '<g>',
+    ...scribbles.map(scribble=>`<path d='${sketchy.getPathsFromStroke(scribble)}'/>`),
+    "</g>",
     "</svg>"
-].join("\n")
-LOGGER.info(stopTimer() + "Rendering SVG document")
-//LOGGER.debug(svg)
+].join('')
 
-startTimer()
-fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
-LOGGER.info(stopTimer() + "Writing output file " + options.output)
-
-options.dump && console.log(svg)
-
-exit(0)
