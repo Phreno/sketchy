@@ -18,7 +18,8 @@
     "test": "npx jasmine --fail-fast",
     "test:watch": "npm-watch test",
     "run_cli": "node index.js -i ./rsc/streamlines.svg -d -l info",
-    "run_cli:watch": "npm-watch run_cli"
+    "run_cli:watch": "npm-watch run_cli",
+    "scribble": "./dist/scribble.js -i rsc/squelette-humain.svg -l info -S 1"
   },
   "repository": {
     "type": "git",

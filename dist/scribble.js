@@ -76,9 +76,9 @@ startTimer()
 paths.forEach(path => {
     let matchs = []
     points.forEach(point => pointInSvgPolygon.isInside(point, path) && matchs.push(point))
-    matchs.sort(() => Math.random() - 0.5)
+    //matchs.sort(() => Math.random() - 0.5)
     const chunks = matchs.reduce((acc, cur, i) => {
-            if (i % 5 === 0) acc.push([cur])
+            if (i % 2 === 0) acc.push([cur])
             else acc[acc.length - 1].push(cur)
         return acc
     }, [])
@@ -91,7 +91,6 @@ const svg = [
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
     '<g>',
     ...scribbles.map(scribble => {
-        console.debug(scribble)
         return `<path d='${sketchy.getSvgPathFromStroke(scribble.flat())}'/>`
     }),
     "</g>",
