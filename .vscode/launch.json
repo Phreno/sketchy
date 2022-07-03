@@ -13,43 +13,31 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
           },
-        {
+       {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program with water.svg",
+            "name": "sketchy face-outline.svg",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/index.js",
-            "args": [
-                "--input",
-                "${workspaceFolder}/rsc/water.svg"
-            ],
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program with streamlines.svg",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/index.js",
-            "args": [
-                "--input",
-                "${workspaceFolder}/rsc/streamlines.svg"
-            ],
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program with face-outline.svg",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/index.js",
+            "program": "${workspaceFolder}/dist/sketchy.js",
             "args": [
                 "--input",
                 "${workspaceFolder}/rsc/face-outline.svg"
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "scribble squelette-humain.svg",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/dist/scribble.js",
+            "args": [
+                "--input",
+                "${workspaceFolder}/rsc/squelette-humain.svg",
+                "-l", "info"
             ],
         }
     ]

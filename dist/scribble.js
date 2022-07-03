@@ -29,7 +29,7 @@ program
     .option('-N, --noise             <number>', 'add a random zigzag to the stroke')
     .option('-P, --simulate-pressure', 'whether to simulate pressure based on velocity')
     .option('-S, --size              <number>', 'the base size (diameter) of the stroke')
-    .option('-Z, --step-size         <number>', 'distance between breadcrumbs points when working with a path')
+    .option('-Z, --step-size         <number>', 'distance between breadcrumbs points when working with a path', 10)
     .option('-T, --thinning          <number>', 'the effect of pressure on the stroke\'s size')
     .parse(process.argv)
 
@@ -66,28 +66,23 @@ LOGGER.info(stopTimer() + "*** Extracting paths: " + paths.length)
 // render a grid of points over the SVG document
 // assume a 1024x1024 grid
 startTimer()
-const points = [], range =[...Array(103).keys()].map(e=>e*10)
-range.forEach(x=>range.forEach(y=>points.push([x,y])))
+const points = [], range = [...Array(103).keys()].map(e => e * 10)
+range.forEach(x => range.forEach(y => points.push([x, y])))
 LOGGER.info(stopTimer() + "*** Generating grid of " + points.length + " points spaced by " + options.stepSize + "px")
 
 
 const scribbles = []
-// foreach path in paths
 startTimer()
-paths.forEach(path=>{
-    // collect all grids points that are within the path
- let heatMap = []
-    points.forEach(point=>{
-        if (pointInSvgPolygon(point, path)) heatMap.push(point)
-        heatMap.sort(()=>Math.random()-0.5)
-        // split the heat map into chunks of size 5
-        const chunks = heatMap.reduce((acc, cur, i)=>{
+paths.forEach(path => {
+    let matchs = []
+    points.forEach(point => pointInSvgPolygon.isInside(point, path) && matchs.push(point))
+    matchs.sort(() => Math.random() - 0.5)
+    const chunks = matchs.reduce((acc, cur, i) => {
             if (i % 5 === 0) acc.push([cur])
-            else acc[acc.length-1].push(cur)
-            return acc
-        })
-        scribbles.push(chunks.map(chunk=>freehand(chunk, options)))
-    })
+            else acc[acc.length - 1].push(cur)
+        return acc
+    }, [])
+    scribbles.push(chunks.map(chunk => freehand.getStroke(chunk, options)))
 })
 LOGGER.info(stopTimer() + "*** Generating scribbles: " + scribbles.length)
 
@@ -95,8 +90,19 @@ startTimer()
 const svg = [
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
     '<g>',
-    ...scribbles.map(scribble=>`<path d='${sketchy.getPathsFromStroke(scribble)}'/>`),
+    ...scribbles.map(scribble => {
+        console.debug(scribble)
+        return `<path d='${sketchy.getSvgPathFromStroke(scribble.flat())}'/>`
+    }),
     "</g>",
     "</svg>"
 ].join('')
 
+
+startTimer()
+fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
+LOGGER.info(stopTimer() + "Writing output file " + options.output)
+
+options.dump && console.log(svg)
+
+exit(0)
