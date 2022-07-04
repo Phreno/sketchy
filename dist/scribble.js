@@ -13,13 +13,19 @@ const sketchy = new require('../spec/Sketchy')()
 const LOGGER = require('../tools/Logger')
 const { startTimer, stopTimer } = require("../tools/timer")
 
+const SPACE = " "
+const VIEWBOX_PROP = "@_viewBox"
+const VIEWBOX_X_END = 2
+const VIEWBOX_Y_END = 3
+
+
 program
     .name("sketchy")
     .version(package.version)
     .description("A tool to generate a sketchy stroke")
     .option('-i, --input             <file>', 'input file')
     .option('-o, --output            <file>', 'output file', 'out.svg')
-    .option('-l, --log               <none / info / debug>', 'log level', 'none')
+    .option('-l, --log               <none / info / debug>', 'log level', 'info')
     .option('-d, --dump', 'display result on stdout')
 
     // perfect-freehand options

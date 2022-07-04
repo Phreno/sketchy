@@ -29,15 +29,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "scribble squelette-humain.svg",
+            "name": "scribble tpdne-00.svg",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/dist/scribble.js",
-            "args": [
-                "--input",
-                "${workspaceFolder}/rsc/squelette-humain.svg",
-                "-l", "info"
+            "args":[
+                "-i", "${workspaceFolder}/rsc/tpdne-00.svg",
+                "-Z", "40"
             ],
         }
     ]
