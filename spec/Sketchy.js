@@ -1,9 +1,13 @@
-const { ConsoleReporter } = require('jasmine')
+// returns a window with a document and an svg root node
 const { createSVGWindow } = require('svgdom')
 const window = createSVGWindow()
-const SVG = require("svg.js")(window)
 const document = window.document
+const { SVG, registerWindow } = require('@svgdotjs/svg.js')
+
+// register window and document
+registerWindow(window, document)
 const draw = SVG(document.documentElement)
+
 
 const X = 0
 const Y = 1
