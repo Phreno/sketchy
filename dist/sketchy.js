@@ -32,6 +32,9 @@ program
     .option('-T, --thinning          <number>', 'the effect of pressure on the stroke\'s size')
     .parse(process.argv)
 
+
+const debug = (data , file)=>options.log === 'debug' && fs.writeFileSync('./debug/' + file, data, 'utf8')
+
 // LOGGER.deleteLogFiles()
 const options = program.opts()
 // check if input file is provided
@@ -50,39 +53,39 @@ startTimer()
 LOGGER.level = options.log
 const svgString = fs.readFileSync(options.input, 'utf8')
 LOGGER.info(stopTimer() + "Reading input file " + options.input)
-LOGGER.debug(svgString)
+debug(svgString, 'svgString.svg')
 
 startTimer()
 const svgDocument = parser.parse(svgString)
 LOGGER.info(stopTimer() + "Parsing")
-LOGGER.debug(JSON.stringify(svgDocument, null, 2))
+debug(JSON.stringify(svgDocument, null, 2), 'svgDocument.json')
 
 let paths = [], points = []
 
 startTimer()
 paths = sketchy.getPathsFromSvg(svgDocument)
 LOGGER.info(stopTimer() + "*** Extracting paths: " + paths.length)
-//LOGGER.debug(JSON.stringify(paths, null, 2))
+debug(JSON.stringify(paths, null, 2), 'extracted-paths.json')
 
 startTimer()
 paths = paths.map(path => pathSplitter(path)).flat()
 LOGGER.info(stopTimer() + "Splitting paths into subpaths: " + paths.length)
-LOGGER.debug(JSON.stringify(paths, null, 2))
+debug(JSON.stringify(paths, null, 2), 'splitted-paths.json')
 
 startTimer()
 paths = paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
 LOGGER.info(stopTimer() + "Parsing paths")
-//LOGGER.debug(JSON.stringify(paths, null, 2))
+debug(JSON.stringify(paths, null, 2), 'parsed-paths.json')
 
 startTimer()
 points = sketchy.getPointsFromSvg(svgDocument)
 LOGGER.info(stopTimer() + "*** Extracting points: " + points.length)
-//LOGGER.debug(JSON.stringify(points, null, 2))
+debug(JSON.stringify(points, null, 2), 'extracted-points.json')
 
 startTimer()
 points = points.map(point => sketchy.getPointsFromSvgPoints(point))
 LOGGER.info(stopTimer() + "Parsing points")
-//LOGGER.debug(JSON.stringify(points, null, 2))
+debug(JSON.stringify(points, null, 2), 'parsed-points.json')
 
 
 startTimer()
@@ -91,12 +94,12 @@ if (options.noise) {
     breadcrumbs = breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
     LOGGER.info(stopTimer() + "Adding noise")
 }
-//LOGGER.debug(JSON.stringify(breadcrumbs, null, 2))
+LOGGER.info(stopTimer() + "*** Generating breadcrumbs: " + breadcrumbs.length)
 
 startTimer()
 const strokes = breadcrumbs.map(weave => freehand.getStroke(weave, options))
 LOGGER.info(stopTimer() + "*** Generating freehand stroke")
-//LOGGER.debug(JSON.stringify(strokes, null, 2))
+debug(JSON.stringify(strokes, null, 2), 'strokes.json')
 
 startTimer()
 const svg = [
@@ -107,7 +110,7 @@ const svg = [
     "</svg>"
 ].join("\n")
 LOGGER.info(stopTimer() + "Rendering SVG document")
-//LOGGER.debug(svg)
+debug(svg, 'output.svg')
 
 startTimer()
 fs.writeFileSync(options.output, svg, { encoding: 'utf8' })
