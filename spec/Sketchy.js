@@ -65,7 +65,7 @@ module.exports = function Sketchy() {
         return arr
     }
     /**
-     * Get all the points tags in an SVG tree
+     * Get all the points tags in an SVG tree 
      * @param {Object} source The SVG tree
      * @returns An array of all the value found
      */
