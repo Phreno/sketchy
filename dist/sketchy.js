@@ -19,7 +19,7 @@ program
     .description("A tool to generate a sketchy stroke")
     .option('-i, --input             <file>', 'input file')
     .option('-o, --output            <file>', 'output file', 'out.svg')
-    .option('-l, --log               <none / info / debug>', 'log level', 'none')
+    .option('-l, --log               <none / info / debug>', 'log level', 'info')
     .option('-d, --dump', 'display result on stdout')
     // perfect-freehand options
     .option('-C, --last', 'whether the stroke is complete')
