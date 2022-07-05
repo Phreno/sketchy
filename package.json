@@ -37,13 +37,13 @@
     "npm-watch": "^0.11.0"
   },
   "dependencies": {
+    "@svgdotjs/svg.js": "^3.1.2",
     "commander": "^9.3.0",
     "fast-xml-parser": "^4.0.8",
     "jsdom": "^20.0.0",
     "perfect-freehand": "^1.1.0",
     "point-in-svg-polygon": "^1.0.25",
     "snapsvg": "^0.5.1",
-    "svg.js": "^2.7.1",
     "svgdom": "^0.1.10",
     "winston": "^3.8.0",
     "xmlserializer": "^0.6.1"
