@@ -4,7 +4,9 @@ const startTimer = () => {
 };
 exports.startTimer = startTimer;
 const stopTimer = () => {
-    const time = new Date() - timer;
+    const time = `${new Date() - timer}`.padStart(6, ".");
     return `(${time}ms) `;
 };
 exports.stopTimer = stopTimer;
+
+

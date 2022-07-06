@@ -39,7 +39,6 @@ program
     .option('-T, --thinning          <number>', 'the effect of pressure on the stroke\'s size')
     .parse(process.argv)
 
-// LOGGER.deleteLogFiles()
 const options = program.opts()
 // check if input file is provided
 if (!options.input) {
@@ -57,7 +56,6 @@ startTimer()
 LOGGER.level = options.log
 const svgString = fs.readFileSync(options.input, 'utf8')
 LOGGER.info(stopTimer() + "Reading input file " + options.input)
-LOGGER.debug(svgString)
 
 startTimer()
 const svgDocument = parser.parse(svgString)
