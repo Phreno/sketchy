@@ -1,7 +1,6 @@
 #!/opt/nodejs/16.14.2/bin/node
 const program = require('commander')
 const { exit } = require('process')
-const fs = require('fs')
 const package = require('../package.json')
 const { LOGGER } = require('../tools/Logger')
 const { Cli } = require('../spec/cli/Cli')

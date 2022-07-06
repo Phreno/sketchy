@@ -125,4 +125,8 @@ describe("Sketchy", () => {
             ]))
         })
     })
+    describe("renderGridFromPaths", () => {
+        it("doit etre une fonction", () => expect(sketchy.renderGridFromPaths).toEqual(jasmine.any(Function)))
+        it("doit retourner un tableau", () => expect(sketchy.renderGridFromPaths("")).toEqual([]))
+    })
 })

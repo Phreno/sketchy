@@ -65,7 +65,7 @@ module.exports = function Sketchy() {
         return arr
     }
     /**
-     * Get all the points tags in an SVG tree 
+     * Get all the points tags in an SVG tree
      * @param {Object} source The SVG tree
      * @returns An array of all the value found
      */
@@ -107,5 +107,6 @@ module.exports = function Sketchy() {
         d.push(SVG_CLOSE_PATH)
         return d.join(SPACE)
     }
+    self.renderGridFromPaths = ()=>[]
     return self
 }

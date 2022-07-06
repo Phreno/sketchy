@@ -40,6 +40,9 @@ function Cli(options) {
         LOGGER.info(data.paths.length + " paths found")
         debug(JSON.stringify(data.paths, null, 2), 'extracted-paths.json')
     }
+    self.renderGridFromPaths = () => {
+       console.log("TODO")
+    }
     self.splitPaths = () => {
         data.paths = data.paths.map(path => pathSplitter(path)).flat()
         LOGGER.info(data.paths.length + " paths found")
