@@ -12,6 +12,7 @@ const package = require('../package.json')
 const sketchy = new require('../spec/Sketchy')()
 const LOGGER = require('../tools/Logger')
 const { startTimer, stopTimer } = require("../tools/timer")
+const { LOGGER } = require('../tools/Logger')
 
 const SPACE = " "
 const VIEWBOX_PROP = "@_viewBox"
@@ -82,8 +83,8 @@ paths.forEach(path => {
     points.forEach(point => pointInSvgPolygon.isInside(point, path) && matchs.push(point))
     //matchs.sort(() => Math.random() - 0.5)
     const chunks = matchs.reduce((acc, cur, i) => {
-            if (i % 2 === 0) acc.push([cur])
-            else acc[acc.length - 1].push(cur)
+        if (i % 2 === 0) acc.push([cur])
+        else acc[acc.length - 1].push(cur)
         return acc
     }, [])
     scribbles.push(chunks.map(chunk => freehand.getStroke(chunk, options)))
