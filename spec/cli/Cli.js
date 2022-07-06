@@ -6,12 +6,8 @@ const { LOGGER } = require('../../tools/Logger')
 const { exit } = require('process')
 const fs = require('fs')
 const parser = new fxParser.XMLParser({ ignoreAttributes: false })
-
-
 function Cli(options) {
     const debug = (data, file) => options.log === 'debug' && fs.writeFileSync('./debug/' + file, data, 'utf8')
-
-    // check if input file is provided
     if (!options.input) {
         LOGGER.error("No input file provided")
         exit(1)
@@ -20,7 +16,6 @@ function Cli(options) {
         LOGGER.error("Input file does not exist")
         exit(1)
     }
-
     const data = {
         svgString: null,
         svgDocument: null,
@@ -88,5 +83,4 @@ function Cli(options) {
     self.writeOutputFile = () => fs.writeFileSync(options.output, data.svg, { encoding: 'utf8' })
     return self
 }
-
 exports.Cli = Cli
