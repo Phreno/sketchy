@@ -54,70 +54,89 @@ const worker = {
     strokes: [],
     svg: null
 }
-LOGGER.time(
-    "Reading input file " + options.input, () => {
-        LOGGER.level = options.log
-        worker.svgString = fs.readFileSync(options.input, 'utf8')
-        debug(worker.svgString, 'svgString.svg')
-    })
-LOGGER.time(
-    "Parsing svg data", () => {
-        worker.svgDocument = parser.parse(worker.svgString)
-        debug(JSON.stringify(worker.svgDocument, null, 2), 'svgDocument.json')
-    })
-LOGGER.time(
-    "Extracting paths", () => {
-        worker.paths = sketchy.getPathsFromSvg(worker.svgDocument)
-        LOGGER.info(worker.paths.length + " paths found")
-        debug(JSON.stringify(worker.paths, null, 2), 'extracted-paths.json')
-    })
-LOGGER.time(
-    "Splitting paths", () => {
-        worker.paths = worker.paths.map(path => pathSplitter(path)).flat()
-        LOGGER.info(worker.paths.length + " paths found")
-        debug(JSON.stringify(worker.paths, null, 2), 'splitted-paths.json')
-    })
-LOGGER.time(
-    "Rendering (x,y) coords from svg paths", () => {
-        worker.paths = worker.paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
-        debug(JSON.stringify(worker.paths, null, 2), 'parsed-paths.json')
-    })
-LOGGER.time(
-    "Extracting points", () => {
-        worker.points = sketchy.getPointsFromSvg(worker.svgDocument)
-        LOGGER.info(worker.points.length + " points found")
-        debug(JSON.stringify(worker.points, null, 2), 'extracted-points.json')
-    })
-LOGGER.time(
-    "Rendering (x,y) coords from svg points", () => {
-        worker.points = worker.points.map(point => sketchy.getPointsFromSvgPoints(point))
-        debug(JSON.stringify(worker.points, null, 2), 'parsed-points.json')
-    })
-LOGGER.time(
-    "Extracting breadcrumbs", () => {
-        worker.breadcrumbs = [...worker.paths, ...worker.points]
-        LOGGER.info(worker.breadcrumbs.length + " breadcrumbs found")
-        if (options.noise) {
-            worker.breadcrumbs = worker.breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
-            LOGGER.info("Adding noise: " + options.noise)
-        }
-    })
-LOGGER.time(
-    "Rendering freehand strokes from breadcrumbs", () => {
-        worker.strokes = worker.breadcrumbs.map(weave => freehand.getStroke(weave, options))
-        debug(JSON.stringify(worker.strokes, null, 2), 'strokes.json')
-    })
-LOGGER.time(
-    "Rendering svg", () => {
-        worker.svg = [
-            "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
-            "<g>",
-            ...worker.strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
-            "</g>",
-            "</svg>"
-        ].join("\n")
-        debug(worker.svg, 'output.svg')
-    })
-LOGGER.time("Writing output file", () => fs.writeFileSync(options.output, worker.svg, { encoding: 'utf8' }))
-options.dump && console.log(svg)
-exit(0)
+
+const readInputFile = () => {
+    LOGGER.level = options.log
+    worker.svgString = fs.readFileSync(options.input, 'utf8')
+    debug(worker.svgString, 'svgString.svg')
+}
+
+const parseSvgData = () => {
+    worker.svgDocument = parser.parse(worker.svgString)
+    debug(JSON.stringify(worker.svgDocument, null, 2), 'svgDocument.json')
+}
+
+const extractPaths = () => {
+    worker.paths = sketchy.getPathsFromSvg(worker.svgDocument)
+    LOGGER.info(worker.paths.length + " paths found")
+    debug(JSON.stringify(worker.paths, null, 2), 'extracted-paths.json')
+}
+
+const splitPaths = () => {
+    worker.paths = worker.paths.map(path => pathSplitter(path)).flat()
+    LOGGER.info(worker.paths.length + " paths found")
+    debug(JSON.stringify(worker.paths, null, 2), 'splitted-paths.json')
+}
+
+const renderPointsFromPaths = () => {
+    worker.paths = worker.paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
+    debug(JSON.stringify(worker.paths, null, 2), 'parsed-paths.json')
+}
+
+const extractPoints = () => {
+    worker.points = sketchy.getPointsFromSvg(worker.svgDocument)
+    LOGGER.info(worker.points.length + " points found")
+    debug(JSON.stringify(worker.points, null, 2), 'extracted-points.json')
+}
+
+const renderPointsFromPoints = () => {
+    worker.points = worker.points.map(point => sketchy.getPointsFromSvgPoints(point))
+    debug(JSON.stringify(worker.points, null, 2), 'parsed-points.json')
+}
+
+const extractBreadcrumbs = () => {
+    worker.breadcrumbs = [...worker.paths, ...worker.points]
+    LOGGER.info(worker.breadcrumbs.length + " breadcrumbs found")
+    if (options.noise) {
+        worker.breadcrumbs = worker.breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+        LOGGER.info("Adding noise: " + options.noise)
+    }
+}
+
+const renderFreehand = () => {
+    worker.strokes = worker.breadcrumbs.map(weave => freehand.getStroke(weave, options))
+    debug(JSON.stringify(worker.strokes, null, 2), 'strokes.json')
+}
+
+const renderSvg = () => {
+    worker.svg = [
+        "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
+        "<g>",
+        ...worker.strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
+        "</g>",
+        "</svg>"
+    ].join("\n")
+    debug(worker.svg, 'output.svg')
+}
+const writeOutputFile = () => fs.writeFileSync(options.output, worker.svg, { encoding: 'utf8' })
+
+const main = () => {
+    LOGGER.time("Reading input file " + options.input, readInputFile)
+    LOGGER.time("Parsing svg data", parseSvgData)
+    LOGGER.time("Extracting paths", extractPaths)
+    LOGGER.time("Splitting paths", splitPaths)
+    LOGGER.time("Rendering (x,y) coords from svg paths", renderPointsFromPaths)
+    LOGGER.time("Extracting points", extractPoints)
+    LOGGER.time("Rendering (x,y) coords from svg points", renderPointsFromPoints)
+    LOGGER.time("Extracting breadcrumbs", extractBreadcrumbs)
+    LOGGER.time("Rendering freehand strokes from breadcrumbs", renderFreehand)
+    LOGGER.time("Rendering svg", renderSvg)
+    LOGGER.time("Writing output file", writeOutputFile)
+    options.dump && console.log(svg)
+    exit(0)
+}
+
+main()
+
+
+
