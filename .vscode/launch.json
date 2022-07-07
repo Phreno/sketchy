@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "type": "node",
             "request": "launch",
@@ -16,14 +17,12 @@
        {
             "type": "node",
             "request": "launch",
-            "name": "sketchy face-outline.svg",
+            "name": "scribble",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/dist/sketchy.js",
+            "program": "${workspaceFolder}/dist/scribble.js",
             "args": [
-                "--input",
-                "${workspaceFolder}/rsc/face-outline.svg"
             ],
         },
         {

@@ -1,10 +1,26 @@
-const fs = require("fs")
+#!/opt/nodejs/16.14.2/bin/node
+// returns a window with a document and an svg root node
+const { createSVGWindow } = require('svgdom')
+const window = createSVGWindow()
+const document = window.document
+const { SVG, registerWindow } = require('@svgdotjs/svg.js')
+const { Layer} = require("../tools/cross-hatching/script.js")
 
-// read an image
-const img = fs.readFileSync("../rsc/face-00.jpeg")
+// register window and document
+registerWindow(window, document)
+const draw = SVG(document.documentElement)
+ fs = require("fs")
+const inkjet = require('inkjet');
 
-	// Get the pixel data from the source image.
-    const inkjet = require('inkjet');
-inkjet.decode(fs.readFileSync('./image.jpg'), function(err, decoded) {
-  // decoded: { width: number, height: number, data: Uint8Array }
+
+
+// document.documentElement.innerHTML = draw.svg();
+
+inkjet.decode(fs.readFileSync('./tools/cross-hatching/car.jpg'), function(err, decoded) {
+	for (let i = 0; i < 5; i++) {
+		let layer = new Layer(document.getElementsByTagName("svg")[0], decoded);
+		layer.drawPattern((255 / 5) * i, 0.01, Math.cos(i), Math.sin(i));
+	}
+  draw.svg(document.documentElement.innerHTML)
+  console.log(draw.svg())
 });
