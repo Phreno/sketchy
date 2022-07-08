@@ -13,11 +13,16 @@ fs = require("fs")
 const inkjet = require('inkjet');
 const { exit } = require('process')
 
-const div = document.createElement("svg")
-div.id = "svg-container"
+const div = document.createElementNS('http://www.w3.org/2000/svg','svg')
+
 
 
 const draw = SVG(div)
+draw.viewbox(0,0,1,1)
+draw.css({
+  stroke: "black",
+  "stroke-width": "0.0002"
+})
 
 inkjet.decode(fs.readFileSync('./rsc/jeff.jpg'), function (err, imageData) {
   if (err) {
@@ -26,7 +31,7 @@ inkjet.decode(fs.readFileSync('./rsc/jeff.jpg'), function (err, imageData) {
   } else {
     for (let i = 0; i < 5; i++) {
       let layer = new Layer(div, imageData);
-      layer.drawPattern((255 / 5) * i, 0.01, Math.cos(i), Math.sin(i));
+      layer.drawPattern((255 / 5) * i, 0.005, Math.cos(i), Math.sin(i));
     }
   }
 })
