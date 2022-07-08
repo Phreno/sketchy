@@ -1,3 +1,12 @@
+#!/opt/nodejs/16.14.2/bin/node
+// returns a window with a document and an svg root node
+const { createSVGWindow } = require('svgdom')
+const window = createSVGWindow()
+const document = window.document
+const { SVG, registerWindow } = require('@svgdotjs/svg.js')
+
+// register window and document
+registerWindow(window, document)
 
 function Layer(element, imageData) {
 	this.element = element;
@@ -134,6 +143,9 @@ Layer.prototype.drawPattern = function(threshold, offset, dx, dy) {
 	}
 };
 
+exports.Layer = Layer
+
+/*
 window.onload = function() {
 
 	// Get the pixel data from the source image.
@@ -152,13 +164,4 @@ window.onload = function() {
 	}
 };
 
-window.onmousemove = function(e) {
-	const ratio = 0.1
-	const x = (e.clientX - (window.innerWidth / 2)) * ratio;
-	const y = (e.clientY - (window.innerHeight / 2)) * ratio;
-	var layers = document.getElementsByClassName("layer");
-	for (let i = 0; i < layers.length; i++) {
-		let p = (i - 2) * 0.1
-		layers[i].style.transform = "translate(" + (x * p) + "px, " + (y * p) + "px)";
-	}
-};
+*/
