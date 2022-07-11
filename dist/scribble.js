@@ -5,25 +5,23 @@ const window = createSVGWindow()
 const document = window.document
 const { SVG, registerWindow } = require('@svgdotjs/svg.js')
 const { Layer } = require("../tools/Layer.js")
-
 // register window and document
 registerWindow(window, document)
-
 fs = require("fs")
 const inkjet = require('inkjet');
 const { exit } = require('process')
+//const parser = new fxParser.XMLParser({ ignoreAttributes: false })
+
+
+// extract lines from jpg
 
 const div = document.createElementNS('http://www.w3.org/2000/svg','svg')
-
-
-
 const draw = SVG(div)
 draw.viewbox(0,0,1,1)
 draw.css({
   stroke: "black",
   "stroke-width": "0.0002"
 })
-
 inkjet.decode(fs.readFileSync('./rsc/jeff.jpg'), function (err, imageData) {
   if (err) {
     console.log(err)
@@ -36,5 +34,9 @@ inkjet.decode(fs.readFileSync('./rsc/jeff.jpg'), function (err, imageData) {
   }
 })
 
+// parse Svg String
+//let svgDocument = parser.parse(draw.svg)
 
-console.log(draw.svg())
+
+
+console.log(draw.svg()) 

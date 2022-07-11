@@ -26,14 +26,16 @@ const file = {
     FEED_SYNC: fs.readFileSync("rsc/feed_sync.svg", "utf8"),
     WATER: fs.readFileSync("rsc/water.svg", "utf8"),
     MAP: fs.readFileSync("rsc/map.svg", "utf8"),
-    STREAMLINES: fs.readFileSync("rsc/streamlines.svg", "utf8")
+    STREAMLINES: fs.readFileSync("rsc/streamlines.svg", "utf8"),
+    JEFF: fs.readFileSync("rsc/jeff.svg", "utf8")
 }
 
 const rsc = {
     FEED_SYNC: parser.parse(file.FEED_SYNC),
     WATER: parser.parse(file.WATER),
     MAP: parser.parse(file.MAP),
-    STREAMLINES: parser.parse(file.STREAMLINES)
+    STREAMLINES: parser.parse(file.STREAMLINES),
+    JEFF: parser.parse(file.JEFF)
 }
 
 describe("Sketchy", () => {
@@ -85,6 +87,11 @@ describe("Sketchy", () => {
         it("doit retourner un tableau", () => expect(sketchy.getPointsFromSvg(rsc.STREAMLINES)).toEqual(jasmine.any(Array)));
         it("doit retourner tous les points de streamlines", () => expect(sketchy.getPointsFromSvg(rsc.STREAMLINES).length).toEqual(409))
         it("doit retourner une ligne de points valide avec streamlines", () => expect(sketchy.getPointsFromSvg(rsc.STREAMLINES)[0]).toEqual('80.96,521.9 78,521.52 66,521.26 36,521.12 0,521.08'))
+    })
+    describe("getLinesFromSvg", ()=>{
+        it("doit être un fonction", ()=> expect(sketchy.getLinesFromSvg).toEqual(jasmine.any(Function)))
+        it("doit retourner un tableau", ()=> expect(sketchy.getLinesFromSvg(rsc.STREAMLINES)).toEqual(jasmine.any(Array)))
+        it("doit retourner toutes les lignes de jeff", ()=> expect(sketchy.getLinesFromSvg(rsc.JEFF).length).toEqual(1))
     })
     describe("getPathsFromSvg", () => {
         describe("FEED SYNC", () => {

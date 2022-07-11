@@ -88,6 +88,7 @@ module.exports = function Sketchy() {
         [...getValues(source, SVG_PATH_IDENTIFIER)]
             .flat()
             .map(path => path[SVG_PATH_ATTRIBUTE])
+    self.getLinesFromSvg = (source) => [...getValues(source, "line")]
     /**
      * cf. https://github.com/steveruizok/perfect-freehand #rendering
      * @param {*} stroke
