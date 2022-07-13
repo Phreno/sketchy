@@ -10,8 +10,11 @@ registerWindow(window, document)
 fs = require("fs")
 const inkjet = require('inkjet');
 const { exit } = require('process')
-//const parser = new fxParser.XMLParser({ ignoreAttributes: false })
+const fxParser = require('fast-xml-parser')
+const Sketchy = require('../spec/Sketchy')
+const parser = new fxParser.XMLParser({ ignoreAttributes: false })
 
+const sketchy = new Sketchy()
 
 // extract lines from jpg
 
@@ -34,9 +37,18 @@ inkjet.decode(fs.readFileSync('./rsc/jeff.jpg'), function (err, imageData) {
   }
 })
 
+
 // parse Svg String
-//let svgDocument = parser.parse(draw.svg)
+let svgDocument = parser.parse(draw.svg())
+let lines = sketchy.getLinesFromSvg(svgDocument)
+console.log(lines.length + " lines found")
+// remove duplicate lines
+lines = lines.reduce((acc, line) => {
+    const alreadyExists = acc.some(dirty => Object.keys(dirty).every(keys => dirty[keys] === line[keys]))
+    if (!alreadyExists) acc.push(line)
+    return acc
+}, [])
 
 
 
-console.log(draw.svg()) 
+console.log(lines.length)

@@ -91,7 +91,7 @@ describe("Sketchy", () => {
     describe("getLinesFromSvg", ()=>{
         it("doit être un fonction", ()=> expect(sketchy.getLinesFromSvg).toEqual(jasmine.any(Function)))
         it("doit retourner un tableau", ()=> expect(sketchy.getLinesFromSvg(rsc.STREAMLINES)).toEqual(jasmine.any(Array)))
-        it("doit retourner toutes les lignes de jeff", ()=> expect(sketchy.getLinesFromSvg(rsc.JEFF).length).toEqual(1))
+        it("doit retourner toutes les lignes de jeff", ()=> expect(sketchy.getLinesFromSvg(rsc.JEFF).length).toEqual(3201))
     })
     describe("getPathsFromSvg", () => {
         describe("FEED SYNC", () => {
