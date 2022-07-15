@@ -110,7 +110,7 @@ let paths = strokes.map(stroke => sketchy.getSvgPathFromStroke(stroke))
 const svg = [
   "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
   "<g>",
-  ...paths.map(path => `<path d='${path}'/>`),
+  ...paths.map(path => `<path d="${path}"/>`),
   "</g>",
   "</svg>"
 ].join("\n")
