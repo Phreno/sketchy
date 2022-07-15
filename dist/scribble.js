@@ -57,19 +57,26 @@ draw.css({
 
 var Jimp = require('jimp');
 
+let input = "./rsc/tpdne.jpeg"
+
+let filename = input.split("/").pop()
+let extension = filename.split(".").pop()
+filename = filename.replace(/\.\w+$/, "")
+let buffer = "./rsc/"+filename+"-invert."+extension
+
 // User-Defined Function to read the images
 async function main() {
   const image = await Jimp.read
-  ('./rsc/tpdne.jpeg');
+  (input);
 // invert function
   image.invert()
-      .write('./rsc/tpdne-invert.jpeg');
+      .write(buffer);
 }
 
 main();
 console.log("Image Processing Completed");
 
-inkjet.decode(fs.readFileSync('./rsc/tpdne-invert.jpeg'), function (err, imageData) {
+inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
   if (err) {
     console.log(err)
     exit(1)
