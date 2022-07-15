@@ -31,6 +31,7 @@ program
     .option("-l, --log <none / info / debug>", "log level", "info")
 
     .option("-Y, --layers <number>", "number of layer decomposition", 5)
+    .option("-W, --distance <number>", "distance between strokes", 0.005)
 
     .option('-C, --last', 'whether the stroke is complete')
     .option('-L, --streamline        <number>', 'how much to streamline the stroke')
@@ -75,7 +76,7 @@ inkjet.decode(fs.readFileSync('./rsc/tpdne-invert.jpeg'), function (err, imageDa
   } else {
     for (let i = 0; i < options.layers; i++) {
       let layer = new Layer(div, imageData);
-      layer.drawPattern((255 / options.layers) * i, 0.005, Math.cos(i), Math.sin(i));
+      layer.drawPattern((255 / options.layers) * i, options.distance, Math.cos(i), Math.sin(i));
     }
   }
 })
