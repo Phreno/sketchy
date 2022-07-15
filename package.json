@@ -18,7 +18,8 @@
     "test": "npx jasmine --fail-fast",
     "test:watch": "npm-watch test",
     "scribble": "./dist/scribble.js -i rsc/square.svg",
-    "sketchy": "./dist/sketchy.js -i rsc/square.svg"
+    "sketchy": "./dist/sketchy.js -i rsc/square.svg",
+    "download:tpdne": "wget https://thispersondoesnotexist.com/image -O rsc/tpdne.jpeg"
   },
   "repository": {
     "type": "git",
