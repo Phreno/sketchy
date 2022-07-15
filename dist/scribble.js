@@ -57,9 +57,9 @@ draw.css({
 
 var Jimp = require('jimp');
 
-let input = "./rsc/tpdne.jpeg"
+//options.input = "./rsc/tpdne.jpeg"
 
-let filename = input.split("/").pop()
+let filename = options.input.split("/").pop()
 let extension = filename.split(".").pop()
 filename = filename.replace(/\.\w+$/, "")
 let buffer = "./rsc/"+filename+"-invert."+extension
@@ -67,14 +67,15 @@ let buffer = "./rsc/"+filename+"-invert."+extension
 // User-Defined Function to read the images
 async function main() {
   const image = await Jimp.read
-  (input);
+  (options.input);
 // invert function
-  image.invert()
+  await image.invert()
       .write(buffer);
 }
 
 main();
-console.log("Image Processing Completed");
+console.log()
+console.log(filename, extension, buffer);
 
 inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
   if (err) {
@@ -125,4 +126,4 @@ const svg = [
   "</svg>"
 ].join("\n")
 
-fs.writeFileSync("rsc/out.svg", svg, { encoding: 'utf8' })
+fs.writeFileSync("rsc/"+filename+".svg", svg, { encoding: 'utf8' })
