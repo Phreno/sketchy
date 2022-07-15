@@ -30,6 +30,8 @@ program
         .option("-o, --output <file>", "output file", "out.svg")
     .option("-l, --log <none / info / debug>", "log level", "info")
 
+    .option("-Y, --layers <number>", "number of layer decomposition", 5)
+
     .option('-C, --last', 'whether the stroke is complete')
     .option('-L, --streamline        <number>', 'how much to streamline the stroke')
     .option('-M, --smoothing         <number>', 'how much to soften the stroke\'s edges')
@@ -71,9 +73,9 @@ inkjet.decode(fs.readFileSync('./rsc/tpdne-invert.jpeg'), function (err, imageDa
     console.log(err)
     exit(1)
   } else {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < options.layers; i++) {
       let layer = new Layer(div, imageData);
-      layer.drawPattern((255 / 5) * i, 0.005, Math.cos(i), Math.sin(i));
+      layer.drawPattern((255 / options.layers) * i, 0.005, Math.cos(i), Math.sin(i));
     }
   }
 })
