@@ -33,6 +33,8 @@ program
     .option("-Y, --layers <number>", "number of layer decomposition", 5)
     .option("-W, --distance <number>", "distance between strokes", 0.005)
 
+    .option("-I, --ignore-layer <number>", "layer to ignore", false)
+
     .option('-C, --last', 'whether the stroke is complete')
     .option('-L, --streamline        <number>', 'how much to streamline the stroke')
     .option('-M, --smoothing         <number>', 'how much to soften the stroke\'s edges')
@@ -45,7 +47,7 @@ program
 
 const options = program.opts()
 
-
+// todo: grouper par calques
 
 const div = document.createElementNS('http://www.w3.org/2000/svg','svg')
 const draw = SVG(div)
@@ -73,9 +75,7 @@ async function main() {
       .write(buffer);
 }
 
-main();
-console.log()
-console.log(filename, extension, buffer);
+main()
 
 inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
   if (err) {
@@ -83,11 +83,20 @@ inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
     exit(1)
   } else {
     for (let i = 0; i < options.layers; i++) {
-      let layer = new Layer(div, imageData);
-      layer.drawPattern((255 / options.layers) * i, options.distance, Math.cos(i), Math.sin(i));
+      // todo: ignorer plusieurs calques
+      if(i === parseInt(options.ignoreLayer)) continue;
+        let layer = new Layer(div, imageData);
+        layer.drawPattern(
+          (255 / options.layers) * i,
+          // todo: ajuster la distance suivant le layer
+          options.distance,
+          // todo: possibilité de randomizer la direction
+          Math.cos(i),
+          Math.sin(i));
     }
   }
 })
+
 
 
 // parse Svg String
@@ -102,6 +111,7 @@ lines = lines.reduce((acc, line) => {
 }, [])
 
 // scale lines
+// todo: faire des constantes
 lines = lines.map(line => ({
   "@_x1": line["@_x1"] * 1000,
   "@_y1": line["@_y1"] * 1000,
@@ -120,7 +130,7 @@ let paths = strokes.map(stroke => sketchy.getSvgPathFromStroke(stroke))
 
 const svg = [
   "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
-  "<g>",
+  "<g style=\"fill: transparent; stroke: black\">",
   ...paths.map(path => `<path d="${path}"/>`),
   "</g>",
   "</svg>"
