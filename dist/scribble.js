@@ -33,7 +33,7 @@ program
     .option("-Y, --layers <number>", "number of layer decomposition", 5)
     .option("-W, --distance <number>", "distance between strokes", 0.005)
 
-    .option("-I, --ignore-layer <number>", "layer to ignore", false)
+    .option("-I, --ignore-layer <string>", "layer to ignore", false)
 
     .option('-C, --last', 'whether the stroke is complete')
     .option('-L, --streamline        <number>', 'how much to streamline the stroke')
@@ -84,7 +84,7 @@ inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
   } else {
     for (let i = 0; i < options.layers; i++) {
       // todo: ignorer plusieurs calques
-      if(i === parseInt(options.ignoreLayer)) continue;
+      if(options.ignoreLayer && options.ignoreLayer.split(",").includes(""+i)) continue;
         let layer = new Layer(div, imageData);
         layer.drawPattern(
           (255 / options.layers) * i,
