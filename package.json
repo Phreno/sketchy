@@ -19,7 +19,8 @@
     "test:watch": "npm-watch test",
     "scribble": "./dist/scribble.js -i rsc/square.svg",
     "sketchy": "./dist/sketchy.js -i rsc/square.svg",
-    "download:tpdne": "wget https://thispersondoesnotexist.com/image -O rsc/tpdne.jpeg"
+    "download:tpdne": "wget https://thispersondoesnotexist.com/image -O rsc/tpdne.jpeg",
+    "download:tadne": "wget https://thisartworkdoesnotexist.com/ -O rsc/tadne.jpeg"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "@svgdotjs/svg.js": "^3.1.2",
     "commander": "^9.3.0",
     "fast-xml-parser": "^4.0.8",
+    "imagetracerjs": "^1.2.6",
     "inkjet": "^3.0.0",
     "jimp": "^0.16.1",
     "jsdom": "^20.0.0",

@@ -68,11 +68,8 @@ let buffer = "./rsc/"+filename+"-invert."+extension
 
 // User-Defined Function to read the images
 async function main() {
-  const image = await Jimp.read
-  (options.input);
-// invert function
-  await image.invert()
-      .write(buffer);
+  await Jimp.read(options.input).then(image=>
+    image.invert().write(buffer));
 }
 
 main()
@@ -113,10 +110,10 @@ lines = lines.reduce((acc, line) => {
 // scale lines
 // todo: faire des constantes
 lines = lines.map(line => ({
-  "@_x1": line["@_x1"] * 1000,
-  "@_y1": line["@_y1"] * 1000,
-  "@_x2": line["@_x2"] * 1000,
-  "@_y2": line["@_y2"] * 1000
+  "@_x1": line["@_x1"] * 1000 + Math.random() * options.noise*2,
+  "@_y1": line["@_y1"] * 1000 + Math.random() * options.noise*2,
+  "@_x2": line["@_x2"] * 1000 + Math.random() * options.noise*2,
+  "@_y2": line["@_y2"] * 1000 + Math.random() * options.noise*2
 }))
 
 
@@ -130,7 +127,7 @@ let paths = strokes.map(stroke => sketchy.getSvgPathFromStroke(stroke))
 
 const svg = [
   "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
-  "<g style=\"fill: transparent; stroke: black\">",
+  "<g style=\"fill: transparent; stroke: black; stroke-width: 0.5\">",
   ...paths.map(path => `<path d="${path}"/>`),
   "</g>",
   "</svg>"
