@@ -13,6 +13,9 @@ const fxParser = require('fast-xml-parser')
 const Sketchy = require('../spec/Sketchy')
 const parser = new fxParser.XMLParser({ ignoreAttributes: false })
 const freehand = require('perfect-freehand')
+const pathSplitter = require("../tools/PathSplitter")
+
+const ImageTracer = require("imagetracerjs");
 
 const sketchy = new Sketchy()
 
@@ -58,6 +61,7 @@ draw.css({
 })
 
 var Jimp = require('jimp');
+const PathSplitter = require('../tools/PathSplitter.js')
 
 //options.input = "./rsc/tpdne.jpeg"
 
@@ -74,7 +78,9 @@ async function main() {
 
 main()
 
+let svgTrace, image
 inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
+  image = imageData
   if (err) {
     console.log(err)
     exit(1)
@@ -91,9 +97,19 @@ inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {
           Math.cos(i),
           Math.sin(i));
     }
+
+
+    svgTrace = parser.parse(ImageTracer.imagedataToSVG(imageData, "posterized1"))
   }
 })
 
+let pathTrace = sketchy.getPathsFromSvg(svgTrace)
+pathTrace = pathTrace.map(path=>pathSplitter((path))).flat()
+let pointsTrace = pathTrace.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
+pointsTrace = pointsTrace.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+let trace = pointsTrace.map(weave => freehand.getStroke(weave, options))
+
+fs.writeFileSync("out.svg", JSON.stringify(trace, null, 2))
 
 
 // parse Svg String
@@ -110,10 +126,10 @@ lines = lines.reduce((acc, line) => {
 // scale lines
 // todo: faire des constantes
 lines = lines.map(line => ({
-  "@_x1": line["@_x1"] * 1000 + Math.random() * options.noise*2,
-  "@_y1": line["@_y1"] * 1000 + Math.random() * options.noise*2,
-  "@_x2": line["@_x2"] * 1000 + Math.random() * options.noise*2,
-  "@_y2": line["@_y2"] * 1000 + Math.random() * options.noise*2
+  "@_x1": line["@_x1"] * image.width + Math.random() * options.noise,
+  "@_y1": line["@_y1"] * image.height + Math.random() * options.noise,
+  "@_x2": line["@_x2"] * image.width + Math.random() * options.noise,
+  "@_y2": line["@_y2"] * image.height + Math.random() * options.noise
 }))
 
 
@@ -130,7 +146,11 @@ const svg = [
   "<g style=\"fill: transparent; stroke: black; stroke-width: 0.5\">",
   ...paths.map(path => `<path d="${path}"/>`),
   "</g>",
+  "<g style=\"fill: transparent; stroke: black; stroke-width: 0.5\">",
+  ...trace.map(path=> `<path d="${sketchy.getSvgPathFromStroke(path)}"/>`),
+  "</g>",
   "</svg>"
 ].join("\n")
 
 fs.writeFileSync("rsc/"+filename+".svg", svg, { encoding: 'utf8' })
+exit(0)
