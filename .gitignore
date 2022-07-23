@@ -1,0 +1,11 @@
+**/@_test*
+node_modules/
+*log
+/*svg
+/*json
+out/
+debug/
+**/*out.svg
+*out.svg
+**/*tpdne.svg
+rsc/

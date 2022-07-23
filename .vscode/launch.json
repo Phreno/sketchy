@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jasmine",
+            "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+          },
+       {
+            "type": "node",
+            "request": "launch",
+            "name": "scribble",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/dist/scribble.js",
+            "args": [
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "scribble tpdne-00.svg",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/dist/scribble.js",
+            "args":[
+                "-i", "${workspaceFolder}/rsc/tpdne-00.svg",
+                "-Z", "40"
+            ],
+        }
+    ]
+}
