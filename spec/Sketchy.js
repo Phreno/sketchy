@@ -38,7 +38,6 @@ function * getValues (source, search) {
 }
 
 module.exports = function Sketchy () {
-  const self = {}
   /**
      * Modifie légèrement les points passés en paramètre de facon à rendre un tracé irrégulier
      * @param {Array} points Liste de points à transformer sous la forme [[x,y],[x,y],...]
@@ -46,15 +45,17 @@ module.exports = function Sketchy () {
      * @param {Number} options.noise Coefficient de bruit
      * @returns Un tableau de points transformés en fonction des options
      */
-  self.randomize = (points, options = DEFAULT_RANDOM) => options.noise === 0
-    ? points
-    : points.map(point => [point[X] + Math.random() * options.noise, point[Y] + Math.random() * options.noise])
-    /**
+  function randomize (points, options = DEFAULT_RANDOM) {
+    return options.noise === 0
+      ? points
+      : points.map(point => [point[X] + Math.random() * options.noise, point[Y] + Math.random() * options.noise])
+  }
+  /**
      * Récupère un tableun de points à partir d'un tracé SVG
      * @param {String} svgPath Tracé SVG à transformer
      * @returns un tableau de points sous la forme [[x,y],[x,y],...]
      */
-  self.getPointsFromSvgPath = (svgPath, stepSize = 10) => {
+  function getPointsFromSvgPath (svgPath, stepSize = 10) {
     const path = draw.path(svgPath)
     const length = path.length()
     const arr = [...Array(Math.ceil(length / stepSize)).keys()].map(i => {
@@ -68,32 +69,34 @@ module.exports = function Sketchy () {
      * @param {Object} source The SVG tree
      * @returns An array of all the value found
      */
-  self.getPointsFromSvg = (source) => [...getValues(source, '@_points')]
+  function getPointsFromSvg (source) { return [...getValues(source, '@_points')] }
   /**
      * Parse SVG points to an array of points
      * @param {Array} points
      * @returns An array of points
      */
-  self.getPointsFromSvgPoints = (points) =>
-    points.split(/\s+/) // '1,2 3,4' => ['1,2', '3,4']
+  function getPointsFromSvgPoints (points) {
+    (points || '').split(/\s+/) // '1,2 3,4' => ['1,2', '3,4']
       .map(el => el.split(',') // ['1,2', '3,4'] => [["1","2"], ["3","4"]]
         .map(el => parseFloat(el))) // [["1","2"], ["3","4"]] => [[1,2], [3,4]]
+  }
   /**
      * Récupère tous les chemins d'un fichier SVG récursivement
      * @param {Object} source Le fichier SVG parsé via fast-xml-parser
      * @returns tous les paths du fichier SVG
      */
-  self.getPathsFromSvg = (source) =>
-    [...getValues(source, SVG_PATH_IDENTIFIER)]
+  function getPathsFromSvg (source) {
+    return [...getValues(source, SVG_PATH_IDENTIFIER)]
       .flat()
       .map(path => path[SVG_PATH_ATTRIBUTE])
-  self.getLinesFromSvg = (source) => [...getValues(source, 'line')].flat()
+  }
+  function getLinesFromSvg (source) { return [...getValues(source, 'line')].flat() }
   /**
      * cf. https://github.com/steveruizok/perfect-freehand #rendering
      * @param {*} stroke
      * @returns
      */
-  self.getSvgPathFromStroke = (stroke) => {
+  function getSvgPathFromStroke (stroke) {
     if (!stroke.length) return EMPTY
     const d = stroke.reduce(
       (acc, [x0, y0], i, arr) => {
@@ -103,10 +106,16 @@ module.exports = function Sketchy () {
       },
       [SVG_ABSOLUTE_MOVE, ...stroke[0], SVG_QUADRATIC_CURVE]
     )
-
     d.push(SVG_CLOSE_PATH)
     return d.join(SPACE)
   }
-  self.renderGridFromPaths = () => []
-  return self
+  return {
+    randomize,
+    getPointsFromSvgPath,
+    getPointsFromSvg,
+    getPointsFromSvgPoints,
+    getPathsFromSvg,
+    getLinesFromSvg,
+    getSvgPathFromStroke
+  }
 }
