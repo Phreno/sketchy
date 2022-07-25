@@ -1,10 +1,9 @@
-var jsdom = require('jsdom');
-const { JSDOM } = jsdom;
-const { window } = new JSDOM('<html><body></body></html>', {runScripts: 'dangerously'});
-global.window = window;
+const jsdom = require('jsdom')
+const { JSDOM } = jsdom
+const { window } = new JSDOM('<html><body></body></html>', { runScripts: 'dangerously' })
+global.window = window
 // loading snapsvg
-var Snap = require('snapsvg');
-
+const Snap = require('snapsvg')
 
 /**
  * This script was taken from a discussion on Google Groups.
@@ -45,92 +44,87 @@ var Snap = require('snapsvg');
  * NB: This class requires http://snapsvg.io/
  */
 module.exports = function (pathData) {
+  function pathToAbsoluteSubPaths (pathString) {
+    const pathCommands = Snap.parsePathString(pathString)
+    let endPoint = [0, 0]
+    const subPaths = []
+    let command = []
+    let i = 0
 
-    function pathToAbsoluteSubPaths(path_string) {
-        var path_commands = Snap.parsePathString(path_string),
-            end_point = [0, 0],
-            sub_paths = [],
-            command = [],
-            i = 0;
+    while (i < pathCommands.length) {
+      command = pathCommands[i]
+      endPoint = getNextEndPoint(endPoint, command)
+      if (command[0] === 'm') {
+        command = ['M', endPoint[0], endPoint[1]]
+      }
+      const subPath = [command.join(' ')]
 
-        while (i < path_commands.length) {
+      i++
 
-            command = path_commands[i];
-            end_point = getNextEndPoint(end_point, command);
-            if (command[0] === 'm') {
-                command = ['M', end_point[0], end_point[1]];
-            }
-            var sub_path = [command.join(' ')];
+      while (!endSubPath(pathCommands, i)) {
+        command = pathCommands[i]
+        subPath.push(command.join(' '))
+        endPoint = getNextEndPoint(endPoint, command)
+        i++
+      }
 
-
-            i++;
-
-            while (!endSubPath(path_commands, i)) {
-
-                command = path_commands[i];
-                sub_path.push(command.join(' '));
-                end_point = getNextEndPoint(end_point, command);
-                i++;
-            }
-
-            sub_paths.push(sub_path.join(' '));
-        };
-
-        return sub_paths;
+      subPaths.push(subPath.join(' '))
     };
 
-    function getNextEndPoint(end_point, command) {
-        var x = end_point[0], y = end_point[1];
-        if (isRelative(command)) {
-            switch (command[0]) {
-                case 'h':
-                    x += command[1];
-                    break;
-                case 'v':
-                    y += command[1];
-                    break;
-                case 'z':
-                    // back to [0,0]?
-                    x = 0;
-                    y = 0;
-                    break;
-                default:
-                    x += command[command.length - 2];
-                    y += command[command.length - 1];
-            };
-        } else {
-            switch (command[0]) {
-                case 'H':
-                    x = command[1];
-                    break;
-                case 'V':
-                    y = command[1];
-                    break;
-                case 'Z':
-                    // back to [0,0]?
-                    x = 0;
-                    y = 0
-                    break;
-                default:
-                    x = command[command.length - 2];
-                    y = command[command.length - 1];
-            };
-        }
-        return [x, y];
+    return subPaths
+  };
+
+  function getNextEndPoint (endPoint, command) {
+    let x = endPoint[0]; let y = endPoint[1]
+    if (isRelative(command)) {
+      switch (command[0]) {
+        case 'h':
+          x += command[1]
+          break
+        case 'v':
+          y += command[1]
+          break
+        case 'z':
+          // back to [0,0]?
+          x = 0
+          y = 0
+          break
+        default:
+          x += command[command.length - 2]
+          y += command[command.length - 1]
+      };
+    } else {
+      switch (command[0]) {
+        case 'H':
+          x = command[1]
+          break
+        case 'V':
+          y = command[1]
+          break
+        case 'Z':
+          // back to [0,0]?
+          x = 0
+          y = 0
+          break
+        default:
+          x = command[command.length - 2]
+          y = command[command.length - 1]
+      };
     }
+    return [x, y]
+  }
 
-    function isRelative(command) {
-        return command[0] === command[0].toLowerCase();
+  function isRelative (command) {
+    return command[0] === command[0].toLowerCase()
+  }
+
+  function endSubPath (commands, index) {
+    if (index >= commands.length) {
+      return true
+    } else {
+      return commands[index][0].toLowerCase() === 'm'
     }
+  }
 
-    function endSubPath(commands, index) {
-        if (index >= commands.length) {
-            return true;
-        } else {
-            return commands[index][0].toLowerCase() === 'm';
-        }
-    }
-
-    return pathToAbsoluteSubPaths(pathData);
-
-};
+  return pathToAbsoluteSubPaths(pathData)
+}
