@@ -2,7 +2,6 @@
 node_modules/
 *log
 /*svg
-/*json
 out/
 debug/
 **/*out.svg

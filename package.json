@@ -1,0 +1,71 @@
+{
+  "name": "sketchy",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "watch": {
+    "test": "**/*.js",
+    "test:debug": "**/*.js",
+    "format": "**/*.js",
+    "ctags": "**/*.js",
+    "status": "**/*js"
+  },
+  "scripts": {
+    "status": "git status",
+    "status:watch": "npm-watch status",
+    "edit": "nvim ; standard --fix",
+    "tmux": "./scripts/tmux-session-large.sh",
+    "tmux:kill": "tmux kill-session -t sketchy",
+    
+    "ctags": "ctags -R --exclude=\"debug/*\" --exclude=\"node_modules/*\" --exclude=.git --exclude=\"*json\" --exclude=\"*svg\" --exclude=\"rsc/*\"",
+    "ctags:watch": "npm-watch ctags",
+    
+    "test:debug":  "node --inspect-brk ./node_modules/jasmine/bin/jasmine.js  --fail-fast",
+    "test:debug:watch":  "node --inspect-brk ./node_modules/jasmine/bin/jasmine.js  --fail-fast",
+    "test":  "npx jasmine  --fail-fast",
+    "test:watch": "npm-watch test",
+    
+    "format": "standard",
+    "format:fix": "standard --fix",
+    "format:watch": "npm-watch format",
+    
+    "scribble": "./dist/scribble.js -i rsc/square.svg",
+    "sketchy": "./dist/sketchy.js -i rsc/square.svg",
+    
+    "download:tpdne": "wget https://thispersondoesnotexist.com/image -O rsc/tpdne.jpeg",
+    "download:tadne": "wget https://thisartworkdoesnotexist.com/ -O rsc/tadne.jpeg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phreno/sketchy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Phreno/sketchy/issues"
+  },
+  "homepage": "https://github.com/Phreno/sketchy#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "jasmine": "^4.2.1",
+    "npm-watch": "^0.11.0"
+  },
+  "dependencies": {
+    "@svgdotjs/svg.js": "^3.1.2",
+    "commander": "^9.3.0",
+    "fast-xml-parser": "^4.0.8",
+    "imagetracerjs": "^1.2.6",
+    "inkjet": "^3.0.0",
+    "jimp": "^0.16.1",
+    "jsdom": "^20.0.0",
+    "perfect-freehand": "^1.1.0",
+    "point-in-svg-polygon": "^1.0.25",
+    "snapsvg": "^0.5.1",
+    "svgdom": "^0.1.10",
+    "winston": "^3.8.0",
+    "xmlserializer": "^0.6.1"
+  },
+  "standard": {
+    "globals": ["expect", "fit", "it", "xit", "fdescribe", "xdescribe", "describe", "jasmine", "beforeEach" ]
+  }
+}
