@@ -1,4 +1,4 @@
-#!/opt/nodejs/16.14.2/bin/node
+#!/usr/bin/env node
 const program = require('commander')
 const { exit } = require('process')
 const bundle = require('../package.json')

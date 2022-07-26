@@ -96,7 +96,7 @@ module.exports = function Sketchy () {
      * @param {*} stroke
      * @returns
      */
-  function getSvgPathFromStroke (stroke) {
+  function getSvgPathFromCoords (stroke) {
     if (!stroke.length) return EMPTY
     const d = stroke.reduce(
       (acc, [x0, y0], i, arr) => {
@@ -116,6 +116,6 @@ module.exports = function Sketchy () {
     getSvgPointsFromSvgObjectPoints,
     getSvgPathsFromSvgObject,
     getLinesFromSvg,
-    getSvgPathFromStroke
+    getSvgPathFromCoords
   }
 }

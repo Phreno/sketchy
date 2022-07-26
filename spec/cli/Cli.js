@@ -37,7 +37,7 @@ function Cli (options) {
     debug(JSON.stringify(data.svgDocument, null, 2), 'svgDocument.json')
   }
   self.extractPaths = () => {
-    data.paths = sketchy.getPathsFromSvg(data.svgDocument)
+    data.paths = sketchy.getSvgPathsFromSvgObject(data.svgDocument)
     LOGGER.info(data.paths.length + ' paths found')
     debug(JSON.stringify(data.paths, null, 2), 'extracted-paths.json')
   }
@@ -50,23 +50,23 @@ function Cli (options) {
     debug(JSON.stringify(data.paths, null, 2), 'splitted-paths.json')
   }
   self.renderPointsFromPaths = () => {
-    data.paths = data.paths.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
+    data.paths = data.paths.map(path => sketchy.getCoordsFromSvgPath(path, options.stepSize))
     debug(JSON.stringify(data.paths, null, 2), 'parsed-paths.json')
   }
   self.extractPoints = () => {
-    data.points = sketchy.getPointsFromSvg(data.svgDocument)
+    data.points = sketchy.getSvgPointsFromSvgObject(data.svgDocument)
     LOGGER.info(data.points.length + ' points found')
     debug(JSON.stringify(data.points, null, 2), 'extracted-points.json')
   }
   self.renderPointsFromPoints = () => {
-    data.points = data.points.map(point => sketchy.getPointsFromSvgPoints(point))
+    data.points = data.points.map(point => sketchy.getCoordsFromSvgPoints(point))
     debug(JSON.stringify(data.points, null, 2), 'parsed-points.json')
   }
   self.extractBreadcrumbs = () => {
     data.breadcrumbs = [...data.paths, ...data.points]
     LOGGER.info(data.breadcrumbs.length + ' breadcrumbs found')
     if (options.noise) {
-      data.breadcrumbs = data.breadcrumbs.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+      data.breadcrumbs = data.breadcrumbs.map(breadcrumb => sketchy.addNoiseToCoords(breadcrumb, { noise: options.noise }))
       LOGGER.info('Adding noise: ' + options.noise)
     }
   }
@@ -78,7 +78,7 @@ function Cli (options) {
     data.svg = [
       "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
       '<g>',
-      ...data.strokes.map(stroke => `<path d='${sketchy.getSvgPathFromStroke(stroke)}'/>`),
+      ...data.strokes.map(stroke => `<path d='${sketchy.getSvgPathFromCoords(stroke)}'/>`),
       '</g>',
       '</svg>'
     ].join('\n')

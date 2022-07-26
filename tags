@@ -72,7 +72,7 @@ getCoordsFromSvgPath	spec/Sketchy.js	/^  function getCoordsFromSvgPath (svgPath,
 getLinesFromSvg	spec/Sketchy.js	/^  function getLinesFromSvg (source) { return [...getValues(source, 'line')].flat() }$/;"	f	function:module.exports
 getNextEndPoint	tools/PathSplitter.js	/^  function getNextEndPoint (endPoint, command) {$/;"	f	function:module.exports
 getPixelValue	tools/Layer.js	/^Layer.prototype.getPixelValue = function (x, y) {$/;"	m	class:registerWindow
-getSvgPathFromStroke	spec/Sketchy.js	/^  function getSvgPathFromStroke (stroke) {$/;"	f	function:module.exports
+getSvgPathFromCoords	spec/Sketchy.js	/^  function getSvgPathFromCoords (stroke) {$/;"	f	function:module.exports
 getSvgPathsFromSvgObject	spec/Sketchy.js	/^  function getSvgPathsFromSvgObject (source) {$/;"	f	function:module.exports
 getSvgPointsFromSvgObject	spec/Sketchy.js	/^  function getSvgPointsFromSvgObject (source) { return [...getValues(source, '@_points')] }$/;"	f	function:module.exports
 getSvgPointsFromSvgObjectPoints	spec/Sketchy.js	/^  function getSvgPointsFromSvgObjectPoints (points) {$/;"	f	function:module.exports
