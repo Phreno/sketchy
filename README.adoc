@@ -1,3 +1,7 @@
+# Sketchy
+
+## Librarie de génération d'images
+
 ~/dist/removebg rsc/face-girl-indian.jpeg --format jpg --api-key xxxxxx	 --size full
 node --stack_size=10000 ./dist/scribble.js -i rsc/face-girl-indian-removebg.jpg -N 5 -S 1 -T 2 -Z 20  -W 0.01  -Y 30 
 
