@@ -10,11 +10,16 @@ const POINTS = [[22, 37], [31.470_852_067_168_09, 38.486_799_420_560_374], [40.5
 
 const file = {
   SQUARE: fs.readFileSync('spec/rsc/square.svg', 'utf8'),
-  ONE_PATH: fs.readFileSync('spec/rsc/one-path.svg', 'utf8')
+  ONE_PATH: fs.readFileSync('spec/rsc/one-path.svg', 'utf8'),
+  ONE_POLYLINE: fs.readFileSync('spec/rsc/one-polyline.svg', 'utf8'),
+  ONE_LINE: fs.readFileSync('spec/rsc/one-line.svg', 'utf8')
 }
 
 const rsc = {
-  SQUARE: parser.parse(file.SQUARE)
+  SQUARE: parser.parse(file.SQUARE),
+  ONE_PATH: parser.parse(file.ONE_PATH),
+  ONE_POLYLINE: parser.parse(file.ONE_POLYLINE),
+  ONE_LINE: parser.parse(file.ONE_LINE)
 }
 
 describe('Sketchy', () => {
@@ -43,8 +48,7 @@ describe('Sketchy', () => {
     it('doit être une fonction', () => expect(sketchy.getPointsFromSvgPath).toEqual(jasmine.any(Function)))
     it('doit retourner un tableau', () => expect(sketchy.getPointsFromSvgPath(rsc.SQUARE.svg.g.g.path[0]['@_d'])).toEqual(jasmine.any(Array)))
     it('doit retourner un tableau correspondant au bon path avec SQUARE_SVG', () => {
-      console.log(JSON.stringify(rsc, null, 2))
-      expect(sketchy.getPointsFromSvgPath(rsc.SQUARE.svg.path[0]['@_d'])).toEqual([[22, 37], [31.470_852_067_168_09, 38.486_799_420_560_374], [40.570_470_341_169_276, 42.599_794_182_318_085], [48.777_749_572_118_36, 48.817_879_035_387_96], [55.571_584_510_130_236, 56.619_948_729_884_9], [60.430_869_905_319_74, 65.484_898_015_923_7], [62.834_500_507_801_735, 74.891_621_643_619_26], [56.272_669_936_205_894, 78], [51.297_920_137_853_48, 72.455_200_755_632_65], [47.156_120_339_988_44, 63.285_713_583_166_6], [40.242_746_879_632_165, 55.547_555_762_102_8], [31.649_908_344_011_934, 50.150_817_781_797_4], [22.469_713_320_355_04, 48.005_590_131_606_44], [22, 38.516_377_327_224_26]])
+      expect(sketchy.getPointsFromSvgPath(rsc.ONE_PATH.svg.path['@_d'])).toEqual([[0, 0]])
     }
     )
   }
@@ -62,20 +66,20 @@ describe('Sketchy', () => {
   describe('getPointsFromSvg', () => {
     it('doit être une fonction', () => expect(sketchy.getPointsFromSvg).toEqual(jasmine.any(Function)))
     it('doit retourner un tableau', () => expect(sketchy.getPointsFromSvg(rsc.SQUARE)).toEqual(jasmine.any(Array)))
-    it('doit retourner tous les points de streamlines', () => expect(sketchy.getPointsFromSvg(rsc.SQUARE).length).toEqual(409))
-    it('doit retourner une ligne de points valide avec streamlines', () => expect(sketchy.getPointsFromSvg(rsc.SQUARE)[0]).toEqual('80.96,521.9 78,521.52 66,521.26 36,521.12 0,521.08'))
+    it('doit retourner tous les points de streamlines', () => expect(sketchy.getPointsFromSvg(rsc.ONE_POLYLINE).length).toEqual(1))
+    it('doit retourner une ligne de points valide avec streamlines', () => expect(sketchy.getPointsFromSvg(rsc.ONE_POLYLINE)[0]).toEqual('20,20 40,25 60,40 80,120 120,140 200,180'))
   }
   )
   describe('getLinesFromSvg', () => {
     it('doit être un fonction', () => expect(sketchy.getLinesFromSvg).toEqual(jasmine.any(Function)))
     it('doit retourner un tableau', () => expect(sketchy.getLinesFromSvg(rsc.SQUARE)).toEqual(jasmine.any(Array)))
-    it('doit retourner toutes les lignes de jeff', () => expect(sketchy.getLinesFromSvg(rsc.SQUARE).length).toEqual(3201))
+    it('doit retourner toutes les lignes', () => expect(sketchy.getLinesFromSvg(rsc.ONE_LINE).length).toEqual(1))
   }
   )
   describe('getPathsFromSvg', () => {
     describe('FEED SYNC', () => {
-      it('doit pouvoir retourner tous les chemins de FEED SYNC', () => expect(sketchy.getPathsFromSvg(rsc.SQUARE)).toEqual(jasmine.any(Array)))
-      it('doit retourner 2 chemins', () => expect(sketchy.getPathsFromSvg(rsc.SQUARE)).toEqual(['M22,37c20,0,41,21,41,41h-11c0-15-16-30-30-30z', 'M84,60c-20,0-41-21-41-41h11c0,15,16,30,30,30z']))
+      it('doit pouvoir retourner un array', () => expect(sketchy.getPathsFromSvg(rsc.ONE_PATH)).toEqual(jasmine.any(Array)))
+      it('doit retourner 1 chemins', () => expect(sketchy.getPathsFromSvg(rsc.ONE_PATH)).toEqual(['M 0,0 l 1,1']))
     }
     )
     describe('SQUARE', () => {

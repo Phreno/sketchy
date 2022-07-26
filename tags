@@ -15,11 +15,16 @@ DEFAULT_RANDOM	spec/Sketchy.js	/^const DEFAULT_RANDOM = {$/;"	c
 EMPTY	spec/Sketchy.js	/^const EMPTY = ''$/;"	C
 ImageTracer	dist/scribble.js	/^const ImageTracer = require('imagetracerjs')$/;"	C
 Layer	tools/Layer.js	/^Layer.prototype.drawLine = function (x1, y1, x2, y2) {$/;"	c
-ONE_PATH	spec/SketchySpec.js	/^  ONE_PATH: fs.readFileSync('spec\/rsc\/one-path.svg', 'utf8')$/;"	p	class:file
+ONE_LINE	spec/SketchySpec.js	/^  ONE_LINE: fs.readFileSync('spec\/rsc\/one-line.svg', 'utf8')$/;"	p	class:file
+ONE_LINE	spec/SketchySpec.js	/^  ONE_LINE: parser.parse(file.ONE_LINE)$/;"	p	class:rsc
+ONE_PATH	spec/SketchySpec.js	/^  ONE_PATH: fs.readFileSync('spec\/rsc\/one-path.svg', 'utf8'),$/;"	p	class:file
+ONE_PATH	spec/SketchySpec.js	/^  ONE_PATH: parser.parse(file.ONE_PATH),$/;"	p	class:rsc
+ONE_POLYLINE	spec/SketchySpec.js	/^  ONE_POLYLINE: fs.readFileSync('spec\/rsc\/one-polyline.svg', 'utf8'),$/;"	p	class:file
+ONE_POLYLINE	spec/SketchySpec.js	/^  ONE_POLYLINE: parser.parse(file.ONE_POLYLINE),$/;"	p	class:rsc
 POINTS	spec/SketchySpec.js	/^const POINTS = [[22, 37], [31.470_852_067_168_09, 38.486_799_420_560_374], [40.570_470_341_169_2/;"	C
 SPACE	spec/Sketchy.js	/^const SPACE = ' '$/;"	C
 SQUARE	spec/SketchySpec.js	/^  SQUARE: fs.readFileSync('spec\/rsc\/square.svg', 'utf8'),$/;"	p	class:file
-SQUARE	spec/SketchySpec.js	/^  SQUARE: parser.parse(file.SQUARE)$/;"	p	class:rsc
+SQUARE	spec/SketchySpec.js	/^  SQUARE: parser.parse(file.SQUARE),$/;"	p	class:rsc
 SVG_ABSOLUTE_MOVE	spec/Sketchy.js	/^const SVG_ABSOLUTE_MOVE = 'M'$/;"	C
 SVG_CLOSE_PATH	spec/Sketchy.js	/^const SVG_CLOSE_PATH = 'Z'$/;"	C
 SVG_PATH_ATTRIBUTE	spec/Sketchy.js	/^const SVG_PATH_ATTRIBUTE = '@_d'$/;"	C
