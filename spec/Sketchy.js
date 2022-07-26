@@ -76,7 +76,7 @@ module.exports = function Sketchy () {
      * @returns An array of points
      */
   function getPointsFromSvgPoints (points) {
-    (points || '').split(/\s+/) // '1,2 3,4' => ['1,2', '3,4']
+    return (points || '').split(/\s+/) // '1,2 3,4' => ['1,2', '3,4']
       .map(el => el.split(',') // ['1,2', '3,4'] => [["1","2"], ["3","4"]]
         .map(el => parseFloat(el))) // [["1","2"], ["3","4"]] => [[1,2], [3,4]]
   }
