@@ -45,7 +45,7 @@ module.exports = function Sketchy () {
      * @param {Number} options.noise Coefficient de bruit
      * @returns Un tableau de points transformés en fonction des options
      */
-  function randomize (points, options = DEFAULT_RANDOM) {
+  function addNoiseToCoords (points, options = DEFAULT_RANDOM) {
     return options.noise === 0
       ? points
       : points.map(point => [point[X] + Math.random() * options.noise, point[Y] + Math.random() * options.noise])
@@ -55,7 +55,7 @@ module.exports = function Sketchy () {
      * @param {String} svgPath Tracé SVG à transformer
      * @returns un tableau de points sous la forme [[x,y],[x,y],...]
      */
-  function getPointsFromSvgPath (svgPath, stepSize = 10) {
+  function getCoordsFromSvgPath (svgPath, stepSize = 10) {
     const path = draw.path(svgPath)
     const length = path.length()
     const arr = [...Array(Math.ceil(length / stepSize)).keys()].map(i => {
@@ -69,13 +69,13 @@ module.exports = function Sketchy () {
      * @param {Object} source The SVG tree
      * @returns An array of all the value found
      */
-  function getPointsFromSvg (source) { return [...getValues(source, '@_points')] }
+  function getSvgPointsFromSvgObject (source) { return [...getValues(source, '@_points')] }
   /**
      * Parse SVG points to an array of points
      * @param {Array} points
      * @returns An array of points
      */
-  function getPointsFromSvgPoints (points) {
+  function getSvgPointsFromSvgObjectPoints (points) {
     return (points || '').split(/\s+/) // '1,2 3,4' => ['1,2', '3,4']
       .map(el => el.split(',') // ['1,2', '3,4'] => [["1","2"], ["3","4"]]
         .map(el => parseFloat(el))) // [["1","2"], ["3","4"]] => [[1,2], [3,4]]
@@ -85,7 +85,7 @@ module.exports = function Sketchy () {
      * @param {Object} source Le fichier SVG parsé via fast-xml-parser
      * @returns tous les paths du fichier SVG
      */
-  function getPathsFromSvg (source) {
+  function getSvgPathsFromSvgObject (source) {
     return [...getValues(source, SVG_PATH_IDENTIFIER)]
       .flat()
       .map(path => path[SVG_PATH_ATTRIBUTE])
@@ -110,11 +110,11 @@ module.exports = function Sketchy () {
     return d.join(SPACE)
   }
   return {
-    randomize,
-    getPointsFromSvgPath,
-    getPointsFromSvg,
-    getPointsFromSvgPoints,
-    getPathsFromSvg,
+    addNoiseToCoords,
+    getCoordsFromSvgPath,
+    getSvgPointsFromSvgObject,
+    getSvgPointsFromSvgObjectPoints,
+    getSvgPathsFromSvgObject,
     getLinesFromSvg,
     getSvgPathFromStroke
   }

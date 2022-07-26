@@ -86,7 +86,7 @@ async function main () {
               (255 / options.layers) * i,
               // todo: ajuster la distance suivant le layer
               options.distance,
-              // todo: possibilité de randomizer la direction
+              // todo: possibilité de addNoiseToCoordsr la direction
               Math.cos(i),
               Math.sin(i))
           }
@@ -95,10 +95,10 @@ async function main () {
         }
       })
 
-      let pathTrace = sketchy.getPathsFromSvg(svgTrace)
+      let pathTrace = sketchy.getSvgPathsFromSvgObject(svgTrace)
       pathTrace = pathTrace.map(path => pathSplitter((path))).flat()
-      let pointsTrace = pathTrace.map(path => sketchy.getPointsFromSvgPath(path, options.stepSize))
-      pointsTrace = pointsTrace.map(breadcrumb => sketchy.randomize(breadcrumb, { noise: options.noise }))
+      let pointsTrace = pathTrace.map(path => sketchy.getCoordsFromSvgPath(path, options.stepSize))
+      pointsTrace = pointsTrace.map(breadcrumb => sketchy.addNoiseToCoords(breadcrumb, { noise: options.noise }))
       const trace = pointsTrace.map(weave => freehand.getStroke(weave, options))
 
       // parse Svg String
@@ -124,8 +124,8 @@ async function main () {
 
       // segment lines into array of arrays of points
       lines = lines.map(line => `M${line['@_x1']} ${line['@_y1']}, L${line['@_x2']} ${line['@_y2']}`)
-      lines = lines.map(line => sketchy.getPointsFromSvgPath(line, options.stepSize))
-      lines = lines.map(line => sketchy.randomize(line, options))
+      lines = lines.map(line => sketchy.getCoordsFromSvgPath(line, options.stepSize))
+      lines = lines.map(line => sketchy.addNoiseToCoords(line, options))
 
       const strokes = lines.map(line => freehand.getStroke(line, options))
       const paths = strokes.map(stroke => sketchy.getSvgPathFromStroke(stroke))
