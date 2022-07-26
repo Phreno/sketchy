@@ -128,7 +128,7 @@ async function main () {
       lines = lines.map(line => sketchy.addNoiseToCoords(line, options))
 
       const strokes = lines.map(line => freehand.getStroke(line, options))
-      const paths = strokes.map(stroke => sketchy.getSvgPathFromStroke(stroke))
+      const paths = strokes.map(stroke => sketchy.getSvgPathFromCoords(stroke))
 
       const svg = [
         "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>",
@@ -136,7 +136,7 @@ async function main () {
         ...paths.map(path => `<path d="${path}"/>`),
         '</g>',
         '<g style="fill: transparent; stroke: black; stroke-width: 0.5">',
-        ...trace.map(path => `<path d="${sketchy.getSvgPathFromStroke(path)}"/>`),
+        ...trace.map(path => `<path d="${sketchy.getSvgPathFromCoords(path)}"/>`),
         '</g>',
         '</svg>'
       ].join('\n')
