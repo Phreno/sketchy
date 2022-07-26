@@ -9,11 +9,11 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/p5.9.20210905.0/
-AnonymousFunctionafd82e590100	dist/scribble.js	/^      inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {$/;"	f
-Cli	spec/cli/Cli.js	/^function Cli (options) {$/;"	f
+AnonymousFunction22be9c3e0100	bin/scribble.js	/^      inkjet.decode(fs.readFileSync(buffer), function (err, imageData) {$/;"	f
+Cli	bin/cli/SketchyCLI.js	/^function Cli (options) {$/;"	f
 DEFAULT_RANDOM	spec/Sketchy.js	/^const DEFAULT_RANDOM = {$/;"	c
 EMPTY	spec/Sketchy.js	/^const EMPTY = ''$/;"	C
-ImageTracer	dist/scribble.js	/^const ImageTracer = require('imagetracerjs')$/;"	C
+ImageTracer	bin/scribble.js	/^const ImageTracer = require('imagetracerjs')$/;"	C
 Layer	tools/Layer.js	/^Layer.prototype.drawLine = function (x1, y1, x2, y2) {$/;"	c
 ONE_LINE	spec/SketchySpec.js	/^  ONE_LINE: fs.readFileSync('spec\/rsc\/one-line.svg', 'utf8')$/;"	p	class:file
 ONE_LINE	spec/SketchySpec.js	/^  ONE_LINE: parser.parse(file.ONE_LINE)$/;"	p	class:rsc
@@ -30,44 +30,44 @@ SVG_CLOSE_PATH	spec/Sketchy.js	/^const SVG_CLOSE_PATH = 'Z'$/;"	C
 SVG_PATH_ATTRIBUTE	spec/Sketchy.js	/^const SVG_PATH_ATTRIBUTE = '@_d'$/;"	C
 SVG_PATH_IDENTIFIER	spec/Sketchy.js	/^const SVG_PATH_IDENTIFIER = 'path'$/;"	C
 SVG_QUADRATIC_CURVE	spec/Sketchy.js	/^const SVG_QUADRATIC_CURVE = 'Q'$/;"	C
-Sketchy	dist/scribble.js	/^const Sketchy = require('..\/spec\/Sketchy')$/;"	C
+Sketchy	bin/cli/SketchyCLI.js	/^const Sketchy = require('..\/..\/spec\/Sketchy')$/;"	C
+Sketchy	bin/scribble.js	/^const Sketchy = require('..\/spec\/Sketchy')$/;"	C
 Sketchy	spec/Sketchy.js	/^module.exports = function Sketchy () {$/;"	f
 Sketchy	spec/SketchySpec.js	/^const Sketchy = require('.\/Sketchy')$/;"	C
-Sketchy	spec/cli/Cli.js	/^const Sketchy = require('..\/..\/spec\/Sketchy')$/;"	C
 Snap	tools/PathSplitter.js	/^const Snap = require('snapsvg')$/;"	C
 X	spec/Sketchy.js	/^const X = 0$/;"	C
 Y	spec/Sketchy.js	/^const Y = 1$/;"	C
 addNoiseToCoords	spec/Sketchy.js	/^  function addNoiseToCoords (points, options = DEFAULT_RANDOM) {$/;"	f	function:module.exports
 bounds	tools/Layer.js	/^  this.bounds = {$/;"	c
-breadcrumbs	spec/cli/Cli.js	/^    breadcrumbs: [],$/;"	p	class:Cli.data
-buffer	dist/scribble.js	/^const buffer = '.\/rsc\/' + filename + '-invert.' + extension$/;"	C
-bundle	dist/scribble.js	/^const bundle = require('..\/package.json')$/;"	C
-bundle	dist/sketchy.js	/^const bundle = require('..\/package.json')$/;"	C
+breadcrumbs	bin/cli/SketchyCLI.js	/^    breadcrumbs: [],$/;"	p	class:Cli.data
+buffer	bin/scribble.js	/^const buffer = '.\/rsc\/' + filename + '-invert.' + extension$/;"	C
+bundle	bin/scribble.js	/^const bundle = require('..\/package.json')$/;"	C
+bundle	bin/sketchy.js	/^const bundle = require('..\/package.json')$/;"	C
 center	tools/Layer.js	/^  this.center = {$/;"	c
-cli	dist/sketchy.js	/^const cli = new Cli(options)$/;"	C
-data	spec/cli/Cli.js	/^  const data = {$/;"	c	class:Cli
-div	dist/scribble.js	/^const div = document.createElementNS('http:\/\/www.w3.org\/2000\/svg', 'svg')$/;"	C
-document	dist/scribble.js	/^const document = window.document$/;"	C
+cli	bin/sketchy.js	/^const cli = new Cli(options)$/;"	C
+data	bin/cli/SketchyCLI.js	/^  const data = {$/;"	c	class:Cli
+div	bin/scribble.js	/^const div = document.createElementNS('http:\/\/www.w3.org\/2000\/svg', 'svg')$/;"	C
+document	bin/scribble.js	/^const document = window.document$/;"	C
 document	spec/Sketchy.js	/^const document = window.document$/;"	C
 document	tools/Layer.js	/^const document = window.document$/;"	C
-draw	dist/scribble.js	/^const draw = SVG(div)$/;"	C
+draw	bin/scribble.js	/^const draw = SVG(div)$/;"	C
 drawLine	tools/Layer.js	/^Layer.prototype.drawLine = function (x1, y1, x2, y2) {$/;"	m	class:Layer
 drawPattern	tools/Layer.js	/^Layer.prototype.drawPattern = function (threshold, offset, dx, dy) {$/;"	m	class:Layer
 drawRayIntersection	tools/Layer.js	/^Layer.prototype.drawRayIntersection = function (threshold, cx, cy, dx, dy) {$/;"	m	class:Layer
 endSubPath	tools/PathSplitter.js	/^  function endSubPath (commands, index) {$/;"	f	function:module.exports
 exports	spec/Sketchy.js	/^module.exports = function Sketchy () {$/;"	f	function:module
 exports	tools/PathSplitter.js	/^module.exports = function (pathData) {$/;"	f	function:module
-extension	dist/scribble.js	/^const extension = filename.split('.').pop()$/;"	C
+extension	bin/scribble.js	/^const extension = filename.split('.').pop()$/;"	C
 file	spec/SketchySpec.js	/^const file = {$/;"	c
-filename	dist/scribble.js	/^let filename = options.input.split('\/').pop()$/;"	v
-freehand	dist/scribble.js	/^const freehand = require('perfect-freehand')$/;"	C
-freehand	spec/cli/Cli.js	/^const freehand = require('perfect-freehand')$/;"	C
+filename	bin/scribble.js	/^let filename = options.input.split('\/').pop()$/;"	v
+freehand	bin/cli/SketchyCLI.js	/^const freehand = require('perfect-freehand')$/;"	C
+freehand	bin/scribble.js	/^const freehand = require('perfect-freehand')$/;"	C
+fs	bin/cli/SketchyCLI.js	/^const fs = require('fs')$/;"	C
 fs	spec/SketchySpec.js	/^const fs = require('fs')$/;"	C
-fs	spec/cli/Cli.js	/^const fs = require('fs')$/;"	C
 fs	tools/Logger.js	/^const fs = require('fs')$/;"	C
-fxParser	dist/scribble.js	/^const fxParser = require('fast-xml-parser')$/;"	C
+fxParser	bin/cli/SketchyCLI.js	/^const fxParser = require('fast-xml-parser')$/;"	C
+fxParser	bin/scribble.js	/^const fxParser = require('fast-xml-parser')$/;"	C
 fxParser	spec/SketchySpec.js	/^const fxParser = require('fast-xml-parser')$/;"	C
-fxParser	spec/cli/Cli.js	/^const fxParser = require('fast-xml-parser')$/;"	C
 getCoordsFromSvgPath	spec/Sketchy.js	/^  function getCoordsFromSvgPath (svgPath, stepSize = 10) {$/;"	f	function:module.exports
 getLinesFromSvg	spec/Sketchy.js	/^  function getLinesFromSvg (source) { return [...getValues(source, 'line')].flat() }$/;"	f	function:module.exports
 getNextEndPoint	tools/PathSplitter.js	/^  function getNextEndPoint (endPoint, command) {$/;"	f	function:module.exports
@@ -77,36 +77,36 @@ getSvgPathsFromSvgObject	spec/Sketchy.js	/^  function getSvgPathsFromSvgObject (
 getSvgPointsFromSvgObject	spec/Sketchy.js	/^  function getSvgPointsFromSvgObject (source) { return [...getValues(source, '@_points')] }$/;"	f	function:module.exports
 getSvgPointsFromSvgObjectPoints	spec/Sketchy.js	/^  function getSvgPointsFromSvgObjectPoints (points) {$/;"	f	function:module.exports
 getValues	spec/Sketchy.js	/^function * getValues (source, search) {$/;"	g
-inkjet	dist/scribble.js	/^const inkjet = require('inkjet')$/;"	C
+inkjet	bin/scribble.js	/^const inkjet = require('inkjet')$/;"	C
 isRelative	tools/PathSplitter.js	/^  function isRelative (command) {$/;"	f	function:module.exports
 jsdom	tools/PathSplitter.js	/^const jsdom = require('jsdom')$/;"	C
-main	dist/scribble.js	/^async function main () {$/;"	f
-main	dist/sketchy.js	/^const main = () => {$/;"	C
+main	bin/scribble.js	/^async function main () {$/;"	f
+main	bin/sketchy.js	/^const main = () => {$/;"	C
 noise	spec/Sketchy.js	/^  noise: 0.5$/;"	p	class:DEFAULT_RANDOM
-parser	dist/scribble.js	/^const parser = new fxParser.XMLParser({ ignoreAttributes: false })$/;"	C
+parser	bin/cli/SketchyCLI.js	/^const parser = new fxParser.XMLParser({ ignoreAttributes: false })$/;"	C
+parser	bin/scribble.js	/^const parser = new fxParser.XMLParser({ ignoreAttributes: false })$/;"	C
 parser	spec/SketchySpec.js	/^const parser = new fxParser.XMLParser({$/;"	C
-parser	spec/cli/Cli.js	/^const parser = new fxParser.XMLParser({ ignoreAttributes: false })$/;"	C
-pathSplitter	dist/scribble.js	/^const pathSplitter = require('..\/tools\/PathSplitter')$/;"	C
-pathSplitter	spec/cli/Cli.js	/^const pathSplitter = require('..\/..\/tools\/PathSplitter')$/;"	C
+pathSplitter	bin/cli/SketchyCLI.js	/^const pathSplitter = require('..\/..\/tools\/PathSplitter')$/;"	C
+pathSplitter	bin/scribble.js	/^const pathSplitter = require('..\/tools\/PathSplitter')$/;"	C
 pathToAbsoluteSubPaths	tools/PathSplitter.js	/^  function pathToAbsoluteSubPaths (pathString) {$/;"	f	function:module.exports
-paths	spec/cli/Cli.js	/^    paths: [],$/;"	p	class:Cli.data
-points	spec/cli/Cli.js	/^    points: [],$/;"	p	class:Cli.data
-program	dist/scribble.js	/^const program = require('commander')$/;"	C
-program	dist/sketchy.js	/^const program = require('commander')$/;"	C
+paths	bin/cli/SketchyCLI.js	/^    paths: [],$/;"	p	class:Cli.data
+points	bin/cli/SketchyCLI.js	/^    points: [],$/;"	p	class:Cli.data
+program	bin/scribble.js	/^const program = require('commander')$/;"	C
+program	bin/sketchy.js	/^const program = require('commander')$/;"	C
 registerWindow	tools/Layer.js	/^registerWindow(window, document)$/;"	c
 rsc	spec/SketchySpec.js	/^const rsc = {$/;"	c
-sketchy	dist/scribble.js	/^const sketchy = new Sketchy()$/;"	C
-sketchy	spec/cli/Cli.js	/^const sketchy = new Sketchy()$/;"	C
+sketchy	bin/cli/SketchyCLI.js	/^const sketchy = new Sketchy()$/;"	C
+sketchy	bin/scribble.js	/^const sketchy = new Sketchy()$/;"	C
 startTimer	tools/timer.js	/^const startTimer = () => {$/;"	C
 stopTimer	tools/timer.js	/^const stopTimer = () => {$/;"	C
-strokes	spec/cli/Cli.js	/^    strokes: [],$/;"	p	class:Cli.data
-svg	spec/cli/Cli.js	/^    svg: null$/;"	p	class:Cli.data
-svgDocument	spec/cli/Cli.js	/^    svgDocument: null,$/;"	p	class:Cli.data
-svgString	spec/cli/Cli.js	/^    svgString: null,$/;"	p	class:Cli.data
+strokes	bin/cli/SketchyCLI.js	/^    strokes: [],$/;"	p	class:Cli.data
+svg	bin/cli/SketchyCLI.js	/^    svg: null$/;"	p	class:Cli.data
+svgDocument	bin/cli/SketchyCLI.js	/^    svgDocument: null,$/;"	p	class:Cli.data
+svgString	bin/cli/SketchyCLI.js	/^    svgString: null,$/;"	p	class:Cli.data
 time	tools/timer.js	/^  const time = `${new Date() - timer}`.padStart(6, '.')$/;"	C
 timer	tools/timer.js	/^  timer = new Date()$/;"	v
 timer	tools/timer.js	/^let timer$/;"	v
-window	dist/scribble.js	/^const window = createSVGWindow()$/;"	C
+window	bin/scribble.js	/^const window = createSVGWindow()$/;"	C
 window	spec/Sketchy.js	/^const window = createSVGWindow()$/;"	C
 window	tools/Layer.js	/^const window = createSVGWindow()$/;"	C
 winston	tools/Logger.js	/^const winston = require('winston')$/;"	C

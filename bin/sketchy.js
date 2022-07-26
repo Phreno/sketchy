@@ -3,7 +3,8 @@ const program = require('commander')
 const { exit } = require('process')
 const bundle = require('../package.json')
 const { LOGGER } = require('../tools/Logger')
-const { Cli } = require('../spec/cli/Cli')
+const { Cli } = require('./cli/SketchyCLI')
+
 program
   .name('sketchy')
   .version(bundle.version)
