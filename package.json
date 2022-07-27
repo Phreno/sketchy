@@ -11,13 +11,14 @@
     "status": "**/*js"
   },
   "scripts": {
-    "status": "git status",
+    "status": "git status | egrep -v \"^\\S\" | grep :" ,
     "status:watch": "npm-watch status",
+
     "edit": "nvim ; standard --fix",
     "tmux": "./scripts/tmux-session-large.sh",
-    "tmux:kill": "tmux kill-session -t sketchy",
+    "tmux:kill": "tmux kill-session -t sketchy; tmux kill-session -t sketchy-background",
     
-    "ctags": "ctags -R --exclude=\"debug/*\" --exclude=\"node_modules/*\" --exclude=.git --exclude=\"*json\" --exclude=\"*svg\" --exclude=\"rsc/*\"",
+    "ctags": "ctags -R --exclude=\"debug/*\" --exclude=\"node_modules/*\" --exclude=.git --exclude=\"*json\" --exclude=\"*svg\" --exclude=\"rsc/*\"; tmux display-message -t sketchy:0.0 -d 1000 \"Actualisation des tags\"",
     "ctags:watch": "npm-watch ctags",
     
     "test:debug":  "node --inspect-brk ./node_modules/jasmine/bin/jasmine.js  --fail-fast",
